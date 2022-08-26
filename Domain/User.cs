@@ -1,11 +1,16 @@
-﻿namespace Domain
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace Domain
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int UserId { get; set; }
-        public String Username { get; set; }
+        [Required]
         public String FirstName { get; set; }
+        [Required]
         public String LastName { get; set; }
+        [Required]
+        [EmailAddress]
         public String Email { get; set; }
     }
 }
