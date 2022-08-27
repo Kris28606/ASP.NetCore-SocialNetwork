@@ -25,9 +25,9 @@ namespace SocialNetwork.Controllers
         [Route("/login")]
         public async Task<IActionResult> LogIn([FromBody]LoginDto dto)
         {
-            var token = await jwt.AuthentificationAsync(dto.Username, dto.Password);
-            if (token == null) return Unauthorized();
-            return Ok(token);
+            var user = await jwt.AuthentificationAsync(dto.Username, dto.Password);
+            if (user == null) return Unauthorized();
+            return Ok(user);
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace SocialNetwork.Controllers
             var result = await manager.CreateAsync(newUser, dto.Password);
             if (result.Succeeded)
             {   
-                return Ok("Uspesna registracija");
+                return Ok();
             } else
             {
                 return BadRequest("Neuspesno!"+result.Errors);

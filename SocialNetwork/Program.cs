@@ -1,6 +1,8 @@
+using BusinesLogicLayer.UnitOfWork;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi2.Auth;
@@ -11,7 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<JwtAuthentification>();
-builder.Services.AddDbContext<UserContext>();
+builder.Services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+builder.Services.AddDbContext<UserContext>(options=>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("baza"));
+});
 builder.Services.AddIdentity<User, IdentityRole<int>>().AddEntityFrameworkStores<UserContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthentication(options=> {
@@ -42,6 +48,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(p =>
+{
+    p.AllowAnyHeader();
+    p.AllowAnyMethod();
+    p.WithOrigins("http://localhost:4200");
+    p.AllowCredentials();
+});
+
+app.UseRouting();
 
 app.UseAuthentication();
 
