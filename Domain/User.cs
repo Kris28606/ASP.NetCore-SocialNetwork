@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<int>, MyEntity
     {
         [Required]
         public String FirstName { get; set; }
@@ -12,5 +12,7 @@ namespace Domain
         [Required]
         [EmailAddress]
         public String Email { get; set; }
+
+        public List<Post> Posts { get; set; }
     }
 }
