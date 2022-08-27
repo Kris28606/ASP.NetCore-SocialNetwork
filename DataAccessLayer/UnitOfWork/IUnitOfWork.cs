@@ -10,6 +10,7 @@ namespace DataAccessLayer.UnitOfWork
     public interface IUnitOfWork
     {
         public IUserRepository UserRepository { get; set; }
+        public IPostRepository PostRepository { get; set; }
         public void Save();
     }
 }

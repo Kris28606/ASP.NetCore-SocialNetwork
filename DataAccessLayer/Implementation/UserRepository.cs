@@ -34,7 +34,7 @@ namespace DataAccessLayer.Implementation
 
         public User SearchById(User entity)
         {
-            return context.Users.Single(s => s.Id == entity.Id);
+            return context.Users.SingleOrDefault(s => s.Id == entity.Id);
         }
 
         public void Update(User entity)
