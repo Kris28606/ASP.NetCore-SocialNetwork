@@ -10,5 +10,6 @@ namespace BusinesLogicLayer.UnitOfWork
     public interface IUnitOfWorkService
     {
         public IPostService PostService { get; set; }
+        public IUserService UserService { get; set; }
     }
 }
