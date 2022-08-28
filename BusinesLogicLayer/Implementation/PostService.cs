@@ -32,7 +32,7 @@ namespace BusinesLogicLayer.Implementation
             if (u != null)
             {
                 Post p = requestMapper.toEntity(entity);
-
+                p.Date = DateTime.Now;
                 unit.PostRepository.Add(p);
                 unit.Save();
                 return true;

@@ -8,7 +8,6 @@ namespace SocialNetwork.Dto
         public int Id { get; set; }
         [Required]
         public int UserId { get; set; }
-        public DateTime Date { get; set; }
         public String Description { get; set; }
     }
 }
