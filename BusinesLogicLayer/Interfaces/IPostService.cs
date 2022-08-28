@@ -1,4 +1,5 @@
-﻿using SocialNetwork.Dto;
+﻿using Domain;
+using SocialNetwork.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace BusinesLogicLayer.Interfaces
     public interface IPostService : IService<PostRequest>
     {
         public List<PostResponse> GetAllMyPosts(int userId);
+        public List<PostResponse> GetAllForHome(int i);
     }
 }

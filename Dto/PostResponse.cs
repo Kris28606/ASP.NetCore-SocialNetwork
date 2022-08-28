@@ -7,6 +7,7 @@ namespace SocialNetwork.Dto
         public int PostId { get; set; }
         public String Description { get; set; }
         public DateTime Datum { get; set; }
+        public  String Ago { get; set; }
         public String Username { get; set; }
         public String Name { get; set; }
     }

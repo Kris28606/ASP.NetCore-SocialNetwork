@@ -33,15 +33,10 @@ namespace DataAccessLayer.Implementation
             throw new NotImplementedException();
         }
 
-        public List<Post> GetAllForUser(Post entity)
+        public List<Post> GetAllForHome(int i)
         {
-            User u = context.Users.SingleOrDefault(u => u.Id == entity.UserId);
-            if(u==null)
-            {
-                throw new Exception("Ne postoji user.");
-            }
-            return u.Posts;
-        }
+            return context.Posts.Where(p => p.UserId != i).ToList();
+        } 
 
         public Post SearchById(Post entity)
         {

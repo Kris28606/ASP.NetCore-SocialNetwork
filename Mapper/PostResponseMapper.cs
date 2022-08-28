@@ -18,6 +18,19 @@ namespace Mapper
             pr.Username = entity.User.UserName;
             pr.Name = entity.User.FirstName + " " + entity.User.LastName;
             pr.PostId = entity.PostId;
+            DateTime now = DateTime.Now;
+            TimeSpan days = now - pr.Datum;
+            int minuti = (int)days.TotalMinutes;
+            if(minuti<60)
+            {
+                pr.Ago = minuti + " minutes ago";
+            } else if(minuti<=1440)
+            {
+                pr.Ago = minuti / 60 + " hours ago";
+            } else
+            {
+                pr.Ago = minuti / 1440 + " days ago";
+            }
             return pr;
         }
 

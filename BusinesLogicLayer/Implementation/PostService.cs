@@ -63,5 +63,17 @@ namespace BusinesLogicLayer.Implementation
                 return null;
             }
         }
+
+        public List<PostResponse> GetAllForHome(int i)
+        {
+            List<Post> posts=unit.PostRepository.GetAllForHome(i);
+            List<PostResponse> response = new List<PostResponse>();
+            foreach(Post p in posts)
+            {
+                PostResponse pr = responseMapper.toDto(p);
+                response.Add(pr);
+            }
+            return response;
+        }
     }
 }
