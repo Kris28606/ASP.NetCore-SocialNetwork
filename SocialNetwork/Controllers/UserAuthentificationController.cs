@@ -25,7 +25,7 @@ namespace SocialNetwork.Controllers
         [Route("/login")]
         public async Task<IActionResult> LogIn([FromBody]LoginDto dto)
         {
-            var user = await jwt.AuthentificationAsync(dto.Username, dto.Password);
+            UserDto user = await jwt.AuthentificationAsync(dto.Username, dto.Password);
             if (user == null) return Unauthorized();
             return Ok(user);
         }
