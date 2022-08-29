@@ -31,6 +31,7 @@ namespace Mapper
             {
                 pr.Ago = minuti / 1440 + " days ago";
             }
+            pr.Picture = entity.ImagePath;
             return pr;
         }
 
