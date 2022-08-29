@@ -9,6 +9,6 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IPostRepository : IRepository<Post>
     {
-        public List<Post> GetAllForHome(int id);
+        public List<Post> GetAllForHome(int id, int skip, int take);
     }
 }

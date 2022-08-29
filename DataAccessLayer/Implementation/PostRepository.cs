@@ -33,9 +33,14 @@ namespace DataAccessLayer.Implementation
             throw new NotImplementedException();
         }
 
-        public List<Post> GetAllForHome(int i)
+        public List<Post> GetAllForHome(int i, int skip, int take)
         {
-            return context.Posts.Where(p => p.UserId != i).ToList();
+            List<User> users = context.Users.Where(u => u.Id != i).ToList();
+            List<Post> posts = new List<Post>();
+            users.ForEach(u => posts.AddRange(u.Posts));
+            posts=posts.OrderByDescending(s => s.Date).ToList();
+            return posts.Skip(skip).Take(take).ToList();
+
         } 
 
         public Post SearchById(Post entity)
