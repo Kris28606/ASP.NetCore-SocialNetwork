@@ -10,5 +10,6 @@ namespace SocialNetwork.Dto
         public  String Ago { get; set; }
         public String Username { get; set; }
         public String Name { get; set; }
+        public String Picture { get; set; }
     }
 }
