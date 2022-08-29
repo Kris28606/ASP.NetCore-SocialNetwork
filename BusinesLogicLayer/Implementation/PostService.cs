@@ -3,6 +3,7 @@ using BusinesLogicLayer.UnitOfWork;
 using DataAccessLayer.UnitOfWork;
 using Domain;
 using Mapper;
+using Microsoft.AspNetCore.Hosting;
 using SocialNetwork.Dto;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,19 @@ namespace BusinesLogicLayer.Implementation
             u = unit.UserRepository.SearchById(u);
             if (u != null)
             {
-                Post p = requestMapper.toEntity(entity);
-                p.Date = DateTime.Now;
-                unit.PostRepository.Add(p);
-                unit.Save();
-                return true;
+                try
+                {
+                    Post p = requestMapper.toEntity(entity);
+                    DateTime now = DateTime.Now;
+                    p.Date = now;
+                    unit.PostRepository.Add(p);
+                    unit.Save();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             };
             return false;
         }
@@ -66,7 +75,7 @@ namespace BusinesLogicLayer.Implementation
 
         public List<PostResponse> GetAllForHome(int i)
         {
-            List<Post> posts=unit.PostRepository.GetAllForHome(i);
+            List<Post> posts=unit.PostRepository.GetAllForHome(i, 0, 10);
             List<PostResponse> response = new List<PostResponse>();
             foreach(Post p in posts)
             {
