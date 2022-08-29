@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Dto;
+using System.Text;
 
 namespace SocialNetwork.Controllers
 {
@@ -48,6 +49,23 @@ namespace SocialNetwork.Controllers
                 return BadRequest("Greska");
             }
             return Ok(lista);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("search")]
+        public async Task<IActionResult> search()
+        {
+            var request = HttpContext.Request;
+            var kriterijum = "";
+
+            using(StreamReader reader=new StreamReader(request.Body,Encoding.UTF8, true, 1024, true))
+            {
+                kriterijum = await reader.ReadLineAsync();
+            }
+            kriterijum = kriterijum.Remove(0, 1);
+            kriterijum = kriterijum.Remove(kriterijum.Length - 1);
+            return Ok(unit.UserService.Search(kriterijum));
         }
     }
 }

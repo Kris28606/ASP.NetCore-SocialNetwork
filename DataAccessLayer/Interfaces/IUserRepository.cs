@@ -9,6 +9,6 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
-
+        public List<User> Search(string kriterijum);
     }
 }

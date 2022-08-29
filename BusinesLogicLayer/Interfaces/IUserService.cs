@@ -10,5 +10,6 @@ namespace BusinesLogicLayer.Interfaces
     public interface IUserService : IService<UserDto>
     {
         public UserDto UcitajUsera(int id);
+        public List<UserDto> Search(string kriterijum);
     }
 }

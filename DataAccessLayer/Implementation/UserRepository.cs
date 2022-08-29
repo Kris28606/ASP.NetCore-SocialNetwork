@@ -32,6 +32,11 @@ namespace DataAccessLayer.Implementation
             return context.Users.ToList();
         }
 
+        public List<User> Search(string kriterijum)
+        {
+            return context.Users.Where(u => u.FirstName.Contains(kriterijum)).ToList();
+        }
+
         public User SearchById(User entity)
         {
             return context.Users.SingleOrDefault(s => s.Id == entity.Id);

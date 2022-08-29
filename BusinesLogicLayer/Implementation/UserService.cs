@@ -27,6 +27,18 @@ namespace BusinesLogicLayer.Implementation
             throw new NotImplementedException();
         }
 
+        public List<UserDto> Search(string kriterijum)
+        {
+            List<User> users=unit.UserRepository.Search(kriterijum);
+            List<UserDto> usersDto = new List<UserDto>();
+            if(users.Count()==0)
+            {
+                return usersDto;
+            }
+            users.ForEach(u => usersDto.Add(mapper.toDto(u)));
+            return usersDto;
+        }
+
         public UserDto UcitajUsera(int id)
         {
             User u = new User { Id = id };
