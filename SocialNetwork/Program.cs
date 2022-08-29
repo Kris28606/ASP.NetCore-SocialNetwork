@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi2.Auth;
@@ -55,6 +56,12 @@ app.UseCors(p =>
     p.AllowAnyMethod();
     p.WithOrigins("http://localhost:4200");
     p.AllowCredentials();
+});
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
 });
 
 app.UseRouting();
