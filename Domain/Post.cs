@@ -15,5 +15,6 @@ namespace Domain
         public User User { get; set; }
         public DateTime Date { get; set; }
         public String Description { get; set; }
+        public String ImagePath { get; set; }
     }
 }

@@ -252,6 +252,10 @@ namespace Domain.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
+                            b1.Property<string>("ImagePath")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
                             b1.HasKey("UserId", "PostId");
 
                             b1.ToTable("Posts");

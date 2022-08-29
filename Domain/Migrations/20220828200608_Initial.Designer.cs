@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20220827104920_AddedPost")]
-    partial class AddedPost
+    [Migration("20220828200608_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -251,6 +251,10 @@ namespace Domain.Migrations
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ImagePath")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
