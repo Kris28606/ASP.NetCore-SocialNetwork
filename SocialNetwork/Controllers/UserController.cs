@@ -67,5 +67,19 @@ namespace SocialNetwork.Controllers
             kriterijum = kriterijum.Remove(kriterijum.Length - 1);
             return Ok(unit.UserService.Search(kriterijum));
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("changePicture")]
+        public IActionResult changeProfilePicture([FromBody]UserDto u)
+        {
+            try
+            {
+                return Ok(unit.UserService.ChangePicture(u));
+            } catch(Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
