@@ -18,6 +18,7 @@ namespace Mapper
             dto.Username = entity.UserName;
             dto.Id = entity.Id;
             dto.Email = entity.Email;
+            dto.ProfilePicture = entity.ProfilePicture;
             return dto;
         }
 
@@ -29,6 +30,7 @@ namespace Mapper
             u.Email = dto.Email;
             u.Id = dto.Id;
             u.UserName = dto.Username;
+            u.ProfilePicture = dto.ProfilePicture;
             return u;
         }
     }

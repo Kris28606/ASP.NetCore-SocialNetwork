@@ -10,5 +10,6 @@ namespace SocialNetwork.Dto
         public String Username { get; set; }
         public String Token { get; set; }
         public String Email { get; set; }
+        public String ProfilePicture { get; set; }
     }
 }
