@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Dto;
-using SocialNetwork.PictureUpload;
 
 namespace SocialNetwork.Controllers
 {
@@ -15,12 +14,10 @@ namespace SocialNetwork.Controllers
     public class PostController : ControllerBase
     {
         private readonly IUnitOfWorkService unit;
-        private readonly IWebHostEnvironment env;
 
-        public PostController(IUnitOfWorkService unit, IWebHostEnvironment env)
+        public PostController(IUnitOfWorkService unit)
         {
             this.unit = unit;
-            this.env = env;
         }
 
 
@@ -36,34 +33,6 @@ namespace SocialNetwork.Controllers
                 return Ok("Uspesno ste sacuvali post!");
             }
             return BadRequest("Post ne moze da se sacuva!");
-        }
-        [Authorize]
-        [HttpPost]
-        [Route("upload")]
-        public IActionResult UploadPicture()
-        {
-            var file = HttpContext.Request.Form.Files[0];
-            try
-            {
-                Uploader u = new Uploader(env);
-                return Ok(u.Upload2((FormFile)file));
-
-            }catch(Exception ex)
-            {
-                return BadRequest();
-            }
-            //var baseUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
-            //    HttpContext.Request.PathBase;
-            //Uploader u = new Uploader(env);
-            //try
-            //{
-            //    string result = u.SaveAndCreatePath((FormFile)file, baseUrl);
-            //    return Ok(result);
-            //} catch(Exception e)
-            //{
-            //    return BadRequest();
-            //}
-            
         }
 
         [Authorize]
