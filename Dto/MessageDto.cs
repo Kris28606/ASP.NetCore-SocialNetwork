@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Dto
 {
-    public class MessageDto
+    public class MessageDto : MyDto
     {
+        public int MessageId { get; set; }
+        public int FromId { get; set; }
+        public int ForId { get; set; }
+        public String MessageText { get; set; }
+        public DateTime Time { get; set; }
     }
 }
