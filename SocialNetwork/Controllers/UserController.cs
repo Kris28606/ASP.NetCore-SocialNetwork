@@ -20,19 +20,40 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetUser([FromRoute(Name ="id")] int id)
+        [Route("{username}")]
+        public IActionResult GetUser([FromRoute(Name = "username")] String username)
         {
             try
             {
-                UserDto u=unit.UserService.UcitajUsera(id);
-                if(u!=null)
+                UserDto u = unit.UserService.UcitajUsera(username);
+                if (u != null)
                 {
                     return Ok(u);
                 }
                 return NotFound();
 
-            } catch(Exception ex)
+            } catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("one/{id}")]
+        public IActionResult GetUserById([FromRoute(Name = "id")] int id)
+        {
+            try
+            {
+                UserDto u = unit.UserService.UcitajUseraById(id);
+                if (u != null)
+                {
+                    return Ok(u);
+                }
+                return NotFound();
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -59,7 +80,7 @@ namespace SocialNetwork.Controllers
             var request = HttpContext.Request;
             var kriterijum = "";
 
-            using(StreamReader reader=new StreamReader(request.Body,Encoding.UTF8, true, 1024, true))
+            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8, true, 1024, true))
             {
                 kriterijum = await reader.ReadLineAsync();
             }
@@ -71,15 +92,29 @@ namespace SocialNetwork.Controllers
         [Authorize]
         [HttpPost]
         [Route("changePicture")]
-        public IActionResult changeProfilePicture([FromBody]UserDto u)
+        public IActionResult changeProfilePicture([FromBody] UserDto u)
         {
             try
             {
-                return Ok(unit.UserService.ChangePicture(u));
-            } catch(Exception ex)
+                if (unit.UserService.ChangePicture(u))
+                {
+                    return Ok();
+                } else
+                {
+                    return BadRequest();
+                }
+
+            } catch (Exception ex)
             {
                 return BadRequest();
             }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("inbox/{id}")]
+        public IActionResult GetInboxUsers([FromRoute(Name ="id")] int id){
+            return null;
         }
     }
 }

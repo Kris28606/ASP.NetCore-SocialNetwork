@@ -11,5 +11,6 @@ namespace BusinesLogicLayer.UnitOfWork
     {
         public IPostService PostService { get; set; }
         public IUserService UserService { get; set; }
+        public IMessageService MessageService { get; set; }
     }
 }

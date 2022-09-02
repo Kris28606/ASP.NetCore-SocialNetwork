@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Mapper\Mapper.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
-
 </Project>
