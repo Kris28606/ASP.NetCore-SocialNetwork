@@ -11,5 +11,7 @@ namespace BusinesLogicLayer.Interfaces
     {
         public UserDto UcitajUsera(int id);
         public List<UserDto> Search(string kriterijum);
+        public bool ChangePicture(UserDto user);
+        public UserDto UcitajUseraByUsername(String username);
     }
 }

@@ -10,5 +10,11 @@ namespace DataAccessLayer.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         public List<User> Search(string kriterijum);
+        public bool ChangePicture(User user);
+
+        public User SearchById(User entity);
+
+        public User SearchByUsername(User user);
+        public List<User> GetInboxUsers(int userId);
     }
 }

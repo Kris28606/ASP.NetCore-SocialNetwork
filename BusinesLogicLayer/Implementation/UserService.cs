@@ -49,5 +49,31 @@ namespace BusinesLogicLayer.Implementation
             }
             return null;
         }
+
+        public bool ChangePicture(UserDto user)
+        {
+            User u = mapper.toEntity(user);
+            if (u.ProfilePicture == null || u.ProfilePicture == "")
+            {
+                return false;
+            }
+            bool result = unit.UserRepository.ChangePicture(u);
+            if (result)
+            {
+                unit.Save();
+            }
+            return result;
+        }
+
+        public UserDto UcitajUseraByUsername(string username)
+        {
+            User u = new User { UserName = username };
+            u = unit.UserRepository.SearchByUsername(u);
+            if (u != null)
+            {
+                return mapper.toDto(u);
+            }
+            return null;
+        }
     }
 }
