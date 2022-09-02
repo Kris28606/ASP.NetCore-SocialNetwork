@@ -17,8 +17,10 @@ namespace BusinesLogicLayer.UnitOfWork
         {
             PostService = new PostService(context);
             UserService = new UserService(context);
+            MessageService = new MessageService(context);
         }
         public IPostService PostService { get; set; }
         public IUserService UserService { get; set; }
+        public IMessageService MessageService { get; set; }
     }
 }

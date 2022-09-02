@@ -1,6 +1,7 @@
 ﻿using BusinesLogicLayer.Interfaces;
 using DataAccessLayer.UnitOfWork;
 using Domain;
+using Dto;
 using Mapper;
 using SocialNetwork.Dto;
 using System;
@@ -15,11 +16,13 @@ namespace BusinesLogicLayer.Implementation
     {
         private readonly IUnitOfWork unit;
         private UserMapper userMapper;
+        private MessageMapper messageMapper;
 
         public MessageService(UserContext context)
         {
             this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
             userMapper = new UserMapper();
+            messageMapper=new MessageMapper();
         }
         public bool Create(Message entity)
         {
@@ -44,6 +47,20 @@ namespace BusinesLogicLayer.Implementation
                 usersDto.Add(userMapper.toDto(u));
             });
             return usersDto;
+        }
+
+        public MessageDto SendMessage(MessageDto mess)
+        {
+            Message m = messageMapper.toEntity(mess);
+            m = unit.MessageRepository.Send(m);
+            if(m!=null)
+            {
+                unit.Save();
+                return messageMapper.toDto(m);
+            } else
+            {
+                return null;
+            }
         }
     }
 }

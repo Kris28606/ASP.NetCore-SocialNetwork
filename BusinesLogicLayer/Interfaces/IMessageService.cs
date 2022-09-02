@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Dto;
 using SocialNetwork.Dto;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace BusinesLogicLayer.Interfaces
     {
         public List<UserDto> GetInboxUsers(int userId);
         public List<Message> GetChat(int fromId, int forId);
+        public MessageDto SendMessage(MessageDto mess);
     }
 }
