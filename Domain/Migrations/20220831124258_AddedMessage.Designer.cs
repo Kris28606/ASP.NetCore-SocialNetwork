@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20220831124258_AddedMessage")]
+    partial class AddedMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,30 +26,19 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Message", b =>
                 {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("FromId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
 
                     b.Property<int>("ForId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FromId")
                         .HasColumnType("int");
 
                     b.Property<string>("MessageText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("MessageId");
+                    b.HasKey("FromId", "ForId");
 
                     b.HasIndex("ForId");
-
-                    b.HasIndex("FromId");
 
                     b.ToTable("Messages");
                 });

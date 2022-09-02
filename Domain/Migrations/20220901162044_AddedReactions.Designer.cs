@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20220901162044_AddedReactions")]
+    partial class AddedReactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,32 +26,68 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Message", b =>
                 {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("FromId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
 
                     b.Property<int>("ForId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FromId")
                         .HasColumnType("int");
 
                     b.Property<string>("MessageText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("MessageId");
+                    b.HasKey("FromId", "ForId");
 
                     b.HasIndex("ForId");
 
-                    b.HasIndex("FromId");
-
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Domain.Post", b =>
+                {
+                    b.Property<int>("PostId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Domain.Reaction", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReactionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reactions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -300,41 +338,34 @@ namespace Domain.Migrations
                     b.Navigation("FromUser");
                 });
 
-            modelBuilder.Entity("Domain.User", b =>
+            modelBuilder.Entity("Domain.Post", b =>
                 {
-                    b.OwnsMany("Domain.Post", "Posts", b1 =>
-                        {
-                            b1.Property<int>("UserId")
-                                .HasColumnType("int");
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                            b1.Property<int>("PostId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
+                    b.Navigation("User");
+                });
 
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("PostId"), 1L, 1);
+            modelBuilder.Entity("Domain.Reaction", b =>
+                {
+                    b.HasOne("Domain.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                            b1.Property<DateTime>("Date")
-                                .HasColumnType("datetime2");
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("Reactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                    b.Navigation("Post");
 
-                            b1.Property<string>("ImagePath")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId", "PostId");
-
-                            b1.ToTable("Posts");
-
-                            b1.WithOwner("User")
-                                .HasForeignKey("UserId");
-
-                            b1.Navigation("User");
-                        });
-
-                    b.Navigation("Posts");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -403,8 +434,17 @@ namespace Domain.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Post", b =>
+                {
+                    b.Navigation("Reactions");
+                });
+
             modelBuilder.Entity("Domain.User", b =>
                 {
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
+
                     b.Navigation("Received");
 
                     b.Navigation("Send");

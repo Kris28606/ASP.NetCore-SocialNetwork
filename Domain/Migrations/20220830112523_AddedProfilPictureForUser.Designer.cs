@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20220830112523_AddedProfilPictureForUser")]
+    partial class AddedProfilPictureForUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +23,6 @@ namespace Domain.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Domain.Message", b =>
-                {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
-
-                    b.Property<int>("ForId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FromId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MessageText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("MessageId");
-
-                    b.HasIndex("ForId");
-
-                    b.HasIndex("FromId");
-
-                    b.ToTable("Messages");
-                });
 
             modelBuilder.Entity("Domain.User", b =>
                 {
@@ -281,25 +253,6 @@ namespace Domain.Migrations
                     b.ToTable("UserUser");
                 });
 
-            modelBuilder.Entity("Domain.Message", b =>
-                {
-                    b.HasOne("Domain.User", "ForUser")
-                        .WithMany("Send")
-                        .HasForeignKey("ForId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.User", "FromUser")
-                        .WithMany("Received")
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ForUser");
-
-                    b.Navigation("FromUser");
-                });
-
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.OwnsMany("Domain.Post", "Posts", b1 =>
@@ -401,13 +354,6 @@ namespace Domain.Migrations
                         .HasForeignKey("FollowingId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.User", b =>
-                {
-                    b.Navigation("Received");
-
-                    b.Navigation("Send");
                 });
 #pragma warning restore 612, 618
         }

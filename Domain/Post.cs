@@ -16,5 +16,6 @@ namespace Domain
         public DateTime Date { get; set; }
         public String Description { get; set; }
         public String ImagePath { get; set; }
+        //public List<Reaction> Reactions { get; set; }
     }
 }
