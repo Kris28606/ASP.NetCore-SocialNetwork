@@ -1,4 +1,5 @@
 ﻿using BusinesLogicLayer.UnitOfWork;
+using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,5 +44,28 @@ namespace SocialNetwork.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("send")]
+        public IActionResult SendMeesage([FromBody]MessageDto mess)
+        {
+            try
+            {
+                MessageDto m = unit.MessageService.SendMessage(mess);
+                if (m != null)
+                {
+                    return Ok(m);
+                } else
+                {
+                    return BadRequest();
+                }
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
