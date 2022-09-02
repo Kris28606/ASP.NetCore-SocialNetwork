@@ -18,6 +18,7 @@ namespace Mapper
             pr.Username = entity.User.UserName;
             pr.Name = entity.User.FirstName + " " + entity.User.LastName;
             pr.PostId = entity.PostId;
+            pr.UserId = entity.UserId;
             DateTime now = DateTime.Now;
             TimeSpan days = now - pr.Datum;
             int minuti = (int)days.TotalMinutes;
