@@ -46,5 +46,27 @@ namespace DataAccessLayer.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public bool ChangePicture(User user)
+        {
+            User u = SearchById(user);
+            if (u == null)
+            {
+                return false;
+            }
+            u.ProfilePicture = user.ProfilePicture;
+            context.Users.Update(u);
+            return true;
+        }
+
+        public User SearchByUsername(User user)
+        {
+            return context.Users.SingleOrDefault(u => u.UserName == user.UserName);
+        }
+
+        public List<User> GetInboxUsers(int userId)
+        {
+            return null;
+        }
     }
 }

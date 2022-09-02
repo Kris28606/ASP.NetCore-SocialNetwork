@@ -11,6 +11,7 @@ namespace DataAccessLayer.Interfaces
     {
         public List<Message> GetChat(int forId, int fromId);
         public List<User> GetInboxUsers(int userId);
+        public Message Send(Message m);
 
     }
 }

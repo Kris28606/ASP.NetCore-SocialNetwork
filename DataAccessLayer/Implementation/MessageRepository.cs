@@ -75,5 +75,11 @@ namespace DataAccessLayer.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public Message Send(Message m)
+        {
+            m.Time = DateTime.Now;
+            return context.Messages.Add(m).Entity;
+        }
     }
 }
