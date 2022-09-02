@@ -20,7 +20,7 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("{id}")]
+        [Route("one/{id}")]
         public IActionResult GetUser([FromRoute(Name ="id")] int id)
         {
             try
@@ -33,6 +33,27 @@ namespace SocialNetwork.Controllers
                 return NotFound();
 
             } catch(Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{username}")]
+        public IActionResult GetUser([FromRoute(Name = "username")] string username)
+        {
+            try
+            {
+                UserDto u = unit.UserService.UcitajUseraByUsername(username);
+                if (u != null)
+                {
+                    return Ok(u);
+                }
+                return NotFound();
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -75,7 +96,14 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                return Ok(unit.UserService.ChangePicture(u));
+                if(unit.UserService.ChangePicture(u))
+                {
+                    return Ok();
+                } else
+                {
+                    return BadRequest();
+                }
+                
             } catch(Exception ex)
             {
                 return BadRequest();
