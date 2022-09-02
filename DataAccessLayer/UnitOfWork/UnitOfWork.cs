@@ -12,13 +12,11 @@ namespace DataAccessLayer.UnitOfWork
         {
             this.UserRepository = new UserRepository(context);
             this.PostRepository = new PostRepository(context);
-            this.MessageRepository = new MessageRepository(context);
             this.context = context;
         }
 
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
-        public IMessageRepository MessageRepository { get; set; }
 
         public void Save()
         {

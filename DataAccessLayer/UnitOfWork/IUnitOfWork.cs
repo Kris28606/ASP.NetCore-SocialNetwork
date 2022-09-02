@@ -11,7 +11,6 @@ namespace DataAccessLayer.UnitOfWork
     {
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
-        public IMessageRepository MessageRepository { get; set; }
         public void Save();
     }
 }

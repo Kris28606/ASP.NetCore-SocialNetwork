@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Interfaces;
 using Domain;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +22,6 @@ namespace DataAccessLayer.Implementation
             context.Users.Add(entity);
         }
 
-        public void Update(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Delete(User entity)
         {
             throw new NotImplementedException();
@@ -48,27 +42,9 @@ namespace DataAccessLayer.Implementation
             return context.Users.SingleOrDefault(s => s.Id == entity.Id);
         }
 
-        public bool ChangePicture(User user)
+        public void Update(User entity)
         {
-            User u = SearchById(user);
-            if (u == null)
-            {
-                return false;
-            }
-            u.ProfilePicture = user.ProfilePicture;
-            context.Users.Update(u);
-            return true;
+            throw new NotImplementedException();
         }
-
-        public User SearchByUsername(User user)
-        {
-            return context.Users.SingleOrDefault(u => u.UserName == user.UserName);
-        }
-
-        public List<User> GetInboxUsers(int userId)
-        {
-            return null;
-        }
-            
     }
 }
