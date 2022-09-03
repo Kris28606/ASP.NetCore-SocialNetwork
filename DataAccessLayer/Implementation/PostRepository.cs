@@ -35,9 +35,9 @@ namespace DataAccessLayer.Implementation
 
         public List<Post> GetAllForHome(int i, int skip, int take)
         {
-            List<User> users = context.Users.Where(u => u.Id != i).ToList();
+            User user = context.Users.Include(u=> u.Following).SingleOrDefault(u => u.Id == i);
             List<Post> posts = new List<Post>();
-            users.ForEach(u => posts.AddRange(u.Posts));
+            user.Following.ForEach(u => posts.AddRange(u.Posts));
             posts=posts.OrderByDescending(s => s.Date).ToList();
             return posts.Skip(skip).Take(take).ToList();
 
