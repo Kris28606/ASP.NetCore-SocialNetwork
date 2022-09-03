@@ -27,15 +27,24 @@ namespace BusinesLogicLayer.Implementation
             throw new NotImplementedException();
         }
 
-        public List<UserDto> Search(string kriterijum)
+        public List<UserDto> Search(string kriterijum, int id)
         {
-            List<User> users=unit.UserRepository.Search(kriterijum);
+            List<User> users=unit.UserRepository.Search(kriterijum, id);
             List<UserDto> usersDto = new List<UserDto>();
             if(users.Count()==0)
             {
                 return usersDto;
             }
-            users.ForEach(u => usersDto.Add(mapper.toDto(u)));
+            // da li ih ja pratim
+            // da li oni mene prate
+            users.ForEach(u => {
+                UserDto dto = mapper.toDto(u);
+                User pronadjen=u.Followers.Find(u => u.Id == id);
+                if(pronadjen!=null)  dto.IFollow = true;
+                User pronadjen2 = u.Following.Find(u => u.Id == id);
+                if (pronadjen2 != null) dto.FollowingMe = true;
+                usersDto.Add(dto);
+            });
             return usersDto;
         }
 
@@ -74,6 +83,16 @@ namespace BusinesLogicLayer.Implementation
                 return mapper.toDto(u);
             }
             return null;
+        }
+
+        public bool Unfollow(string username, int id)
+        {
+            bool result=unit.UserRepository.Unfollow(username, id);
+            if(result)
+            {
+                unit.Save();
+            }
+            return result;
         }
     }
 }

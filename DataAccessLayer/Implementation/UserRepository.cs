@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Interfaces;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,9 @@ namespace DataAccessLayer.Implementation
             return context.Users.ToList();
         }
 
-        public List<User> Search(string kriterijum)
+        public List<User> Search(string kriterijum, int id)
         {
-            return context.Users.Where(u => u.FirstName.Contains(kriterijum)).ToList();
+            return context.Users.Include(u=>u.Following).Include(m=> m.Followers).Where(u => u.FirstName.Contains(kriterijum) && u.Id!=id).ToList();
         }
 
         public User SearchById(User entity)
@@ -67,6 +68,19 @@ namespace DataAccessLayer.Implementation
         public List<User> GetInboxUsers(int userId)
         {
             return null;
+        }
+
+        public bool Unfollow(string username, int id)
+        {
+            bool successful = false;
+            User user=context.Users.Include(u => u.Following).SingleOrDefault(u => u.UserName == username);
+            User unfollowed = user.Following.SingleOrDefault(u => u.Id == id);
+            if(unfollowed!=null)
+            {
+                user.Following.Remove(unfollowed);
+                successful = true;
+            }
+            return successful;
         }
     }
 }

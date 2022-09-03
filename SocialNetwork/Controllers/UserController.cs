@@ -74,8 +74,8 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("search")]
-        public async Task<IActionResult> search()
+        [Route("search/{id}")]
+        public async Task<IActionResult> search([FromRoute(Name = "id")] int id)
         {
             var request = HttpContext.Request;
             var kriterijum = "";
@@ -86,7 +86,7 @@ namespace SocialNetwork.Controllers
             }
             kriterijum = kriterijum.Remove(0, 1);
             kriterijum = kriterijum.Remove(kriterijum.Length - 1);
-            return Ok(unit.UserService.Search(kriterijum));
+            return Ok(unit.UserService.Search(kriterijum, id));
         }
 
         [Authorize]
@@ -107,6 +107,24 @@ namespace SocialNetwork.Controllers
             } catch(Exception ex)
             {
                 return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("unfollow/{username}/{unfollowId}")]
+        public IActionResult Unfollow([FromRoute(Name = "username")] string username, [FromRoute(Name ="unfollowId")] int id)
+        {
+            try
+            {
+                if(unit.UserService.Unfollow(username, id))
+                {
+                    return Ok();
+                }
+                return BadRequest();
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
