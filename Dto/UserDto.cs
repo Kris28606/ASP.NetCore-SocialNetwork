@@ -11,5 +11,7 @@ namespace SocialNetwork.Dto
         public String Token { get; set; }
         public String Email { get; set; }
         public String ProfilePicture { get; set; }
+        public bool FollowingMe { get; set; } = false;
+        public bool IFollow { get; set; } = false;
     }
 }
