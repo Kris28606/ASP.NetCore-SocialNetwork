@@ -40,7 +40,7 @@ namespace DataAccessLayer.Implementation
 
         public User SearchById(User entity)
         {
-            return context.Users.SingleOrDefault(s => s.Id == entity.Id);
+            return context.Users.Include(u=>u.Posts).SingleOrDefault(s => s.Id == entity.Id);
         }
 
         public void Update(User entity)
