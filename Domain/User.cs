@@ -19,8 +19,8 @@ namespace Domain
 
         public List<User> Followers { get; set; }
         public List<User> Following { get; set; }
-        
-        //public List<Reaction> Reactions { get; set; }
+        [JsonIgnore]
+        public List<Reaction> Reactions { get; set; }
         [JsonIgnore]
         public List<Message> Received { get; set; }
         [JsonIgnore]

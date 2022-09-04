@@ -20,9 +20,8 @@ namespace Domain
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
-
         public DbSet<Message> Messages { get; set; }
-        //public DbSet<Reaction> Reactions { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,13 +30,12 @@ namespace Domain
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<User>().OwnsMany(s => s.Posts).WithOwner(p => p.User);
+            builder.Entity<User>().HasMany(s => s.Posts).WithOne(p => p.User);
             builder.Entity<User>().HasMany(u => u.Followers).WithMany(u => u.Following);
-            //builder.Ignore<Post>();
-            //builder.Entity<Reaction>().HasKey(r => new { r.PostId, r.UserId });
-            //builder.Entity<Reaction>().HasOne(r => r.User).WithMany(u => u.Reactions);
-            //builder.Entity<Reaction>().HasOne(r => r.Post).WithMany(p => p.Reactions);
-            //builder.Entity<Reaction>().ToTable("Reactions");
+            builder.Entity<Reaction>().HasKey(r => new { r.PostId, r.UserId });
+            builder.Entity<Reaction>().HasOne(r => r.User).WithMany(u => u.Reactions);
+            builder.Entity<Reaction>().HasOne(r => r.Post).WithMany(p => p.Reactions);
+            builder.Entity<Reaction>().ToTable("Reactions");
             builder.Entity<Message>().HasKey(m => m.MessageId);
             builder.Entity<Message>().HasOne(m => m.FromUser).WithMany(s => s.Received).HasForeignKey(m => m.FromId);
             builder.Entity<Message>().HasOne(m => m.ForUser).WithMany(s => s.Send).HasForeignKey(m => m.ForId);
