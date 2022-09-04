@@ -1,4 +1,5 @@
-﻿using Dto;
+﻿using Domain;
+using Dto;
 
 namespace SocialNetwork.Dto
 {
@@ -12,5 +13,7 @@ namespace SocialNetwork.Dto
         public String Username { get; set; }
         public String Name { get; set; }
         public String Picture { get; set; }
+        public int NumberOfLikes { get; set; }
+        public bool ILiked { get; set; } = false;
     }
 }
