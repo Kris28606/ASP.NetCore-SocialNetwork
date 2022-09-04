@@ -35,17 +35,49 @@ namespace DataAccessLayer.Implementation
 
         public List<Post> GetAllForHome(int i, int skip, int take)
         {
-            User user = context.Users.Include(u=> u.Following).SingleOrDefault(u => u.Id == i);
+            User user = context.Users.Include(u=> u.Following).Include(u=>u.Posts).SingleOrDefault(u => u.Id == i);
             List<Post> posts = new List<Post>();
-            user.Following.ForEach(u => posts.AddRange(u.Posts));
+            user.Following.ForEach(u => {
+                List<Post> p = context.Posts.Include(p => p.Reactions).Where(m => m.UserId == u.Id).ToList();
+                posts.AddRange(p);
+            });
             posts=posts.OrderByDescending(s => s.Date).ToList();
             return posts.Skip(skip).Take(take).ToList();
 
-        } 
+        }
+
+        public List<Post> GetMyPosts(int id)
+        {
+            List<Post> posts=context.Posts.Include(p => p.Reactions).Include(p=> p.User).Where(p => p.UserId == id).ToList();
+            posts= posts.OrderByDescending(s => s.Date).ToList();
+            return posts;
+        }
+
+        public bool LikeIt(int postId, int userId)
+        {
+            Reaction r = new Reaction
+            {
+                PostId = postId,
+                UserId = userId
+            };
+            context.Reactions.Add(r);
+            return true;
+        }
 
         public Post SearchById(Post entity)
         {
             return context.Posts.SingleOrDefault(s => s.PostId == entity.PostId);
+        }
+
+        public bool UnlikeIt(int postId, int userId)
+        {
+            Reaction r = context.Reactions.SingleOrDefault(r => r.UserId == userId && r.PostId == postId);
+            if(r!=null)
+            {
+                context.Reactions.Remove(r);
+                return true;
+            }
+            return false;
         }
 
         public void Update(Post entity)
