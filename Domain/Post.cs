@@ -17,5 +17,6 @@ namespace Domain
         public String Description { get; set; }
         public String ImagePath { get; set; }
         public List<Reaction> Reactions { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

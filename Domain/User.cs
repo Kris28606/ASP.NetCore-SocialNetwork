@@ -25,5 +25,7 @@ namespace Domain
         public List<Message> Received { get; set; }
         [JsonIgnore]
         public List<Message> Send { get; set; }
+        [JsonIgnore]
+        public List<Comment> Comments { get; set; }
     }
 }
