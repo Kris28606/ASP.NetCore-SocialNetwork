@@ -44,5 +44,45 @@ namespace SocialNetwork.Controllers
             return Ok(result);
 
         }
+
+        //[Authorize]
+        [HttpPost]
+        [Route("like/{postId}/{username}")]
+        public IActionResult LikeIt([FromRoute(Name ="postId")] int postId, [FromRoute(Name ="username")] string user)
+        {
+            try
+            {
+                bool result = unit.PostService.LikeIt(postId, user);
+                if(result)
+                {
+                    return Ok();
+                }
+                return BadRequest();
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [Authorize]
+        [HttpDelete]
+        [Route("unlike/{postId}/{username}")]
+        public IActionResult UnlikeIt([FromRoute(Name = "postId")] int postId, [FromRoute(Name = "username")] string username)
+        {
+            try
+            {
+                bool result = unit.PostService.UnlikeIt(postId, username);
+                if (result)
+                {
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

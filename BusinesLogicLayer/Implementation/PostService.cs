@@ -53,19 +53,22 @@ namespace BusinesLogicLayer.Implementation
         {
             try
             {
-                User u = new User { Id = userId };
-                u = unit.UserRepository.SearchById(u);
-                if (u != null)
+                List<Post> posts=unit.PostRepository.GetMyPosts(userId);
+                List<PostResponse> responses = new List<PostResponse>();
+                posts.ForEach(p =>
                 {
-                    List<PostResponse> reponse = new List<PostResponse>();
-                    foreach (Post post in u.Posts)
+                    PostResponse response = responseMapper.toDto(p);
+                    p.Reactions.ForEach(r =>
                     {
-                        PostResponse post2 = responseMapper.toDto(post);
-                        reponse.Add(post2);
-                    }
-                    return reponse;
-                }
-                return null;
+                        if (r.UserId == userId)
+                        {
+                            response.ILiked = true;
+                        }
+                    });
+                    response.NumberOfLikes = p.Reactions.Count();
+                    responses.Add(response);
+                });
+                return responses;
             }
             catch (Exception ex)
             {
@@ -80,9 +83,39 @@ namespace BusinesLogicLayer.Implementation
             foreach(Post p in posts)
             {
                 PostResponse pr = responseMapper.toDto(p);
+                p.Reactions.ForEach(r =>
+                {
+                   if (r.UserId == i)
+                   {
+                       pr.ILiked = true;
+                   }
+                });
+                pr.NumberOfLikes = p.Reactions.Count();
                 response.Add(pr);
             }
             return response;
+        }
+
+        public bool LikeIt(int postId, string username)
+        {
+            User u = new User { UserName = username };
+            u= unit.UserRepository.SearchByUsername(u);
+            unit.PostRepository.LikeIt(postId, u.Id);
+            unit.Save();
+            return true;
+        }
+
+        public bool UnlikeIt(int postId, string username)
+        {
+            User u = new User { UserName = username };
+            u = unit.UserRepository.SearchByUsername(u);
+            bool result=unit.PostRepository.UnlikeIt(postId, u.Id);
+            if(result)
+            {
+                unit.Save();
+                return true;
+            }
+            return false;
         }
     }
 }

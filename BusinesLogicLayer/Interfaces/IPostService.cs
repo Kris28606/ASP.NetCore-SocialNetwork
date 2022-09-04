@@ -12,5 +12,7 @@ namespace BusinesLogicLayer.Interfaces
     {
         public List<PostResponse> GetAllMyPosts(int userId);
         public List<PostResponse> GetAllForHome(int i);
+        public bool LikeIt(int postId, string username);
+        public bool UnlikeIt(int postId, string username);
     }
 }
