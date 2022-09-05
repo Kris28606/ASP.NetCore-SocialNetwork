@@ -45,10 +45,10 @@ namespace SocialNetwork.Controllers
 
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
-        [Route("like/{postId}/{username}")]
-        public IActionResult LikeIt([FromRoute(Name ="postId")] int postId, [FromRoute(Name ="username")] string user)
+        [Route("like/{postId}/{user}")]
+        public IActionResult LikeIt([FromRoute(Name ="postId")] int postId, [FromRoute(Name ="user")] string user)
         {
             try
             {
@@ -80,6 +80,25 @@ namespace SocialNetwork.Controllers
                 return BadRequest();
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("likes/{postId}/{user}")]
+        public IActionResult GetLikes([FromRoute(Name ="postId")] int postId, [FromRoute(Name = "user")] string user)
+        {
+            try
+            {
+                List<UserDto> users = unit.PostService.GetLikes(postId, user);
+                if(users!=null)
+                {
+                    return Ok(users);
+                }
+                return BadRequest();
+            } catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
