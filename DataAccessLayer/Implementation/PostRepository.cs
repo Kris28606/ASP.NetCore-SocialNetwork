@@ -35,10 +35,10 @@ namespace DataAccessLayer.Implementation
 
         public List<Post> GetAllForHome(int i, int skip, int take)
         {
-            User user = context.Users.Include(u=> u.Following).Include(u=>u.Posts).SingleOrDefault(u => u.Id == i);
+            User user = context.Users.Include(u=> u.Following).SingleOrDefault(u => u.Id == i);
             List<Post> posts = new List<Post>();
             user.Following.ForEach(u => {
-                List<Post> p = context.Posts.Include(p => p.Reactions).Where(m => m.UserId == u.Id).ToList();
+                List<Post> p = context.Posts.Include(p => p.Reactions).Include(p=>p.Comments).Where(m => m.UserId == u.Id).ToList();
                 posts.AddRange(p);
             });
             posts=posts.OrderByDescending(s => s.Date).ToList();
@@ -46,9 +46,21 @@ namespace DataAccessLayer.Implementation
 
         }
 
+        public List<User> GetLikes(int postId)
+        {
+            Post p=context.Posts.Include(p => p.Reactions).SingleOrDefault(p => p.PostId == postId);
+            List<User> users = new List<User>();
+            p.Reactions.ForEach(r =>
+            {
+                User u = context.Users.Include(m=>m.Followers).Include(m=>m.Following).SingleOrDefault(u => u.Id == r.UserId);
+                users.Add(u);
+            });
+            return users;
+        }
+
         public List<Post> GetMyPosts(int id)
         {
-            List<Post> posts=context.Posts.Include(p => p.Reactions).Include(p=> p.User).Where(p => p.UserId == id).ToList();
+            List<Post> posts=context.Posts.Include(p => p.Reactions).Include(p=> p.User).Include(p => p.Comments).Where(p => p.UserId == id).ToList();
             posts= posts.OrderByDescending(s => s.Date).ToList();
             return posts;
         }

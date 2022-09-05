@@ -18,12 +18,14 @@ namespace BusinesLogicLayer.Implementation
         private readonly IUnitOfWork unit;
         private readonly PostResponseMapper responseMapper;
         private readonly PostRequestMapper requestMapper;
+        private readonly UserMapper userMapper;
 
         public PostService(UserContext context)
         {
             this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
             this.responseMapper = new PostResponseMapper();
             this.requestMapper = new PostRequestMapper();
+            this.userMapper = new UserMapper();
         }
 
         public bool Create(PostRequest entity)
@@ -66,6 +68,7 @@ namespace BusinesLogicLayer.Implementation
                         }
                     });
                     response.NumberOfLikes = p.Reactions.Count();
+                    response.NumberOfComments = p.Comments.Count();
                     responses.Add(response);
                 });
                 return responses;
@@ -91,6 +94,7 @@ namespace BusinesLogicLayer.Implementation
                    }
                 });
                 pr.NumberOfLikes = p.Reactions.Count();
+                pr.NumberOfComments = p.Comments.Count();
                 response.Add(pr);
             }
             return response;
@@ -116,6 +120,22 @@ namespace BusinesLogicLayer.Implementation
                 return true;
             }
             return false;
+        }
+
+        public List<UserDto> GetLikes(int postId, string user)
+        {
+            List<User> users = unit.PostRepository.GetLikes(postId);
+            List<UserDto> usersDto = new List<UserDto>();
+            users.ForEach(u =>
+            {
+                UserDto dto = userMapper.toDto(u);
+                User pronadjen = u.Followers.Find(u => u.UserName == user);
+                if (pronadjen != null) dto.IFollow = true;
+                User pronadjen2 = u.Following.Find(u => u.UserName == user);
+                if (pronadjen2 != null) dto.FollowingMe = true;
+                usersDto.Add(dto);
+            });
+            return usersDto;
         }
     }
 }

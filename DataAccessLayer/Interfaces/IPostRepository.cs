@@ -13,5 +13,6 @@ namespace DataAccessLayer.Interfaces
         public List<Post> GetMyPosts(int id);
         public bool LikeIt(int postId, int userId);
         public bool UnlikeIt(int postId, int userId);
+        public List<User> GetLikes(int postId);
     }
 }
