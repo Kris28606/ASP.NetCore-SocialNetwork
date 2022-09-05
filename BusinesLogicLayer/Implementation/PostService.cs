@@ -2,6 +2,7 @@
 using BusinesLogicLayer.UnitOfWork;
 using DataAccessLayer.UnitOfWork;
 using Domain;
+using Dto;
 using Mapper;
 using Microsoft.AspNetCore.Hosting;
 using SocialNetwork.Dto;
@@ -19,6 +20,7 @@ namespace BusinesLogicLayer.Implementation
         private readonly PostResponseMapper responseMapper;
         private readonly PostRequestMapper requestMapper;
         private readonly UserMapper userMapper;
+        private readonly CommentResponseMapper commentMapper;
 
         public PostService(UserContext context)
         {
@@ -26,6 +28,7 @@ namespace BusinesLogicLayer.Implementation
             this.responseMapper = new PostResponseMapper();
             this.requestMapper = new PostRequestMapper();
             this.userMapper = new UserMapper();
+            this.commentMapper = new CommentResponseMapper();
         }
 
         public bool Create(PostRequest entity)
@@ -136,6 +139,35 @@ namespace BusinesLogicLayer.Implementation
                 usersDto.Add(dto);
             });
             return usersDto;
+        }
+
+        public List<CommentResponse> GetComments(int postId)
+        {
+            List<Comment> comments = unit.PostRepository.GetComments(postId);
+            List<CommentResponse> commentsDto = new List<CommentResponse>();
+            comments.ForEach(c =>
+            {
+                commentsDto.Add(commentMapper.toDto(c));
+            });
+            return commentsDto;
+        }
+
+        public CommentResponse PostComment(CommentRequest dto)
+        {
+            User u = new User { UserName=dto.Username };
+            u = unit.UserRepository.SearchByUsername(u);
+            Comment c = new Comment();
+            c.CommentText = dto.CommentText;
+            c.PostId = dto.PostId;
+            c.User = u;
+            c.DatumVreme = DateTime.Now;
+            Comment result=unit.PostRepository.PostComment(c);
+            if (result!=null)
+            {
+                unit.Save();
+                return commentMapper.toDto(c);
+            }
+            return null;
         }
     }
 }

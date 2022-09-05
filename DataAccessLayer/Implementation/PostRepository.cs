@@ -46,6 +46,13 @@ namespace DataAccessLayer.Implementation
 
         }
 
+        public List<Comment> GetComments(int postId)
+        {
+            List<Comment> comments= context.Comments.Include(c => c.User).Where(c => c.PostId == postId).ToList();
+            comments = comments.OrderBy(s => s.DatumVreme).ToList();
+            return comments;
+        }
+
         public List<User> GetLikes(int postId)
         {
             Post p=context.Posts.Include(p => p.Reactions).SingleOrDefault(p => p.PostId == postId);
@@ -74,6 +81,18 @@ namespace DataAccessLayer.Implementation
             };
             context.Reactions.Add(r);
             return true;
+        }
+
+        public Comment PostComment(Comment c)
+        {
+            try
+            {
+                return context.Comments.Add(c).Entity;
+            } catch(Exception ex)
+            {
+                return null;
+            }
+            
         }
 
         public Post SearchById(Post entity)

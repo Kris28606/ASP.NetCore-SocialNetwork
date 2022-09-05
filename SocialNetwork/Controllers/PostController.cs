@@ -1,6 +1,7 @@
 ﻿
 using BusinesLogicLayer.UnitOfWork;
 using Domain;
+using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -96,6 +97,45 @@ namespace SocialNetwork.Controllers
                 if(users!=null)
                 {
                     return Ok(users);
+                }
+                return BadRequest();
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("comments/{postId}")]
+        public IActionResult GetComments([FromRoute(Name = "postId")] int postId)
+        {
+            try
+            {
+                List<CommentResponse> comments = unit.PostService.GetComments(postId);
+                if (comments != null)
+                {
+                    return Ok(comments);
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("comment")]
+        public IActionResult PostComment([FromBody] CommentRequest com)
+        {
+            try
+            {
+                CommentResponse result = unit.PostService.PostComment(com);
+                if(result!=null)
+                {
+                    return Ok(result);
                 }
                 return BadRequest();
             } catch(Exception ex)
