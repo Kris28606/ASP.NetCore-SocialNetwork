@@ -15,5 +15,6 @@ namespace SocialNetwork.Dto
         public String Picture { get; set; }
         public int NumberOfLikes { get; set; }
         public bool ILiked { get; set; } = false;
+        public int NumberOfComments { get; set; }
     }
 }
