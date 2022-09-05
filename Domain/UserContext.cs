@@ -13,10 +13,10 @@ namespace Domain
     public class UserContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
 
-        //public UserContext([NotNull] DbContextOptions options) : base(options)
-        //{
+        public UserContext([NotNull] DbContextOptions options) : base(options)
+        {
 
-        //}
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -26,7 +26,7 @@ namespace Domain
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=SocialNetwork; Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=SocialNetwork; Trusted_Connection=True;");
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,7 +44,7 @@ namespace Domain
             builder.Entity<Message>().HasOne(m => m.FromUser).WithMany(s => s.Received).HasForeignKey(m => m.FromId);
             builder.Entity<Message>().HasOne(m => m.ForUser).WithMany(s => s.Send).HasForeignKey(m => m.ForId);
 
-            builder.Entity<Comment>().HasKey(c => new { c.UserId, c.PostId });
+            builder.Entity<Comment>().HasKey(c => new { c.UserId, c.PostId, c.DatumVreme });
             builder.Entity<Comment>().HasOne(c => c.Post).WithMany(p => p.Comments);
             builder.Entity<Comment>().HasOne(c => c.User).WithMany(u => u.Comments);
             builder.Entity<Comment>().ToTable("Comments");

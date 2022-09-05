@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Comment
+    public class Comment : MyEntity
     {
         public int UserId { get; set; }
         [JsonIgnore]
@@ -15,5 +15,6 @@ namespace Domain
         public int PostId { get; set; }
         public Post Post { get; set; }
         public String CommentText { get; set; }
+        public DateTime DatumVreme { get; set; }
     }
 }
