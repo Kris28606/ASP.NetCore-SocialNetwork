@@ -18,12 +18,17 @@ namespace DataAccessLayer.Implementation
         }
         public void Add(Notification entity)
         {
-            throw new NotImplementedException();
+            context.Add(entity);
         }
 
         public void Delete(Notification entity)
         {
-            throw new NotImplementedException();
+            LikeNotification like = (LikeNotification)entity;
+            LikeNotification get = context.LikeNotifications.SingleOrDefault(l => l.FromWhoId == like.FromWhoId && l.ForWhoId == like.ForWhoId && l.PostId == like.PostId);
+            if (get != null)
+            {
+                context.LikeNotifications.Remove(get);
+            }
         }
 
         public List<Notification> GetAll()
