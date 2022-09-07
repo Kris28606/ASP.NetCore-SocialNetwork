@@ -12,5 +12,9 @@ namespace BusinesLogicLayer.UnitOfWork
         public IPostService PostService { get; set; }
         public IUserService UserService { get; set; }
         public IMessageService MessageService { get; set; }
+        public INotificationService NotificationService { get; set; }
+        public ILikeNotificationService LikeNotificationService { get; set; }
+        public ICommentNotificationService CommentNotificationService { get; set; }
+        public IFollowNotificationService FollowNotificationService { get; set; }
     }
 }
