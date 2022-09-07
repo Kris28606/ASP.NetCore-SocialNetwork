@@ -12,6 +12,10 @@ namespace DataAccessLayer.UnitOfWork
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
         public IMessageRepository MessageRepository { get; set; }
+        public INotificationRepository NotificationRepository { get; set; }
+        public ILikeNotificationsRepository LikeNotificationsRepository { get; set; }
+        public ICommentNotificationRepository CommentNotificationRepository { get; set; }
+        public IFollowNotificationRepository FollowNotificationRepository { get; set; }
         public void Save();
     }
 }
