@@ -32,6 +32,7 @@ namespace BusinesLogicLayer.Implementation
             nov = unit.PostRepository.SearchById(nov);
             not.ForWhoId = nov.UserId;
             not.Comment = comment.CommentText;
+            not.Date = DateTime.Now;
             unit.CommentNotificationRepository.Add(not);
             unit.Save();
         }

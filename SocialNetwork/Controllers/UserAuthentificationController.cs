@@ -39,7 +39,8 @@ namespace SocialNetwork.Controllers
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
-                UserName = dto.Username
+                UserName = dto.Username,
+                ProfilePicture = dto.ProfilePicture
             };
 
             var result = await manager.CreateAsync(newUser, dto.Password);
