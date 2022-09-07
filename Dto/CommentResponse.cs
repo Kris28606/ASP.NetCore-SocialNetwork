@@ -12,5 +12,6 @@ namespace Dto
         public UserDto User { get; set; }
         public int PostId { get; set; }
         public String CommentText { get; set; }
+        public DateTime Date { get; set; }
     }
 }

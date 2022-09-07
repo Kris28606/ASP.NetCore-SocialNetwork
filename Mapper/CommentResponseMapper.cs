@@ -17,6 +17,7 @@ namespace Mapper
             res.CommentText = entity.CommentText;
             res.User = userMapper.toDto(entity.User);
             res.PostId = entity.PostId;
+            res.Date = entity.DatumVreme;
             return res;
         }
 
