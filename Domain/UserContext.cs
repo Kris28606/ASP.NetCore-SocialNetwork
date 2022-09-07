@@ -13,10 +13,10 @@ namespace Domain
     public class UserContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
 
-        //public UserContext([NotNull] DbContextOptions options) : base(options)
-        //{
+        public UserContext([NotNull] DbContextOptions options) : base(options)
+        {
 
-        //}
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -31,7 +31,7 @@ namespace Domain
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=SocialNetwork; Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=SocialNetwork; Trusted_Connection=True;");
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {

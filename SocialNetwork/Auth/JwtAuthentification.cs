@@ -40,8 +40,6 @@ namespace WebApi2.Auth
                 {
                     Expires = DateTime.UtcNow.AddHours(1),
                     Subject = identity,
-                    //Subject - UserIdentity
-                    //SigningCredentials= omogucice nam da potpisemo taj token tako da znamo da je to nas token
                     SigningCredentials = signCredentials
                 };
 

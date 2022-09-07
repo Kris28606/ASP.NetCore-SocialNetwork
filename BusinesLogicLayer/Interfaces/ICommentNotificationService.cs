@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace BusinesLogicLayer.Interfaces
 {
     public interface ICommentNotificationService : INotificationService
     {
+        public void SendCommentNotification(CommentResponse comment);
     }
 }

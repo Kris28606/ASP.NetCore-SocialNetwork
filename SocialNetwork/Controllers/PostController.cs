@@ -56,6 +56,7 @@ namespace SocialNetwork.Controllers
                 bool result = unit.PostService.LikeIt(postId, user);
                 if(result)
                 {
+                    unit.LikeNotificationService.SendLikeNotification(postId, user);
                     return Ok();
                 }
                 return BadRequest();
@@ -76,6 +77,7 @@ namespace SocialNetwork.Controllers
                 bool result = unit.PostService.UnlikeIt(postId, username);
                 if (result)
                 {
+                    unit.LikeNotificationService.DeleteLikeNotification(postId, username);
                     return Ok();
                 }
                 return BadRequest();
@@ -135,6 +137,7 @@ namespace SocialNetwork.Controllers
                 CommentResponse result = unit.PostService.PostComment(com);
                 if(result!=null)
                 {
+                    unit.CommentNotificationService.SendCommentNotification(result);
                     return Ok(result);
                 }
                 return BadRequest();
