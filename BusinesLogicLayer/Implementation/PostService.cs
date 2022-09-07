@@ -82,9 +82,11 @@ namespace BusinesLogicLayer.Implementation
             }
         }
 
-        public List<PostResponse> GetAllForHome(int i)
+        public List<PostResponse> GetAllForHome(int i, int numOfPosts)
         {
-            List<Post> posts=unit.PostRepository.GetAllForHome(i, 0, 10);
+            int skip = numOfPosts / 7;
+            skip = (skip - 1) * 7;
+            List<Post> posts=unit.PostRepository.GetAllForHome(i, skip, 1);
             List<PostResponse> response = new List<PostResponse>();
             foreach(Post p in posts)
             {

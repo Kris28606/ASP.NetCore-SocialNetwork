@@ -12,7 +12,7 @@ namespace BusinesLogicLayer.Interfaces
     public interface IPostService : IService<PostRequest>
     {
         public List<PostResponse> GetAllMyPosts(int userId);
-        public List<PostResponse> GetAllForHome(int i);
+        public List<PostResponse> GetAllForHome(int i, int numOfPosts);
         public bool LikeIt(int postId, string username);
         public bool UnlikeIt(int postId, string username);
         public List<UserDto> GetLikes(int postId,string user);
