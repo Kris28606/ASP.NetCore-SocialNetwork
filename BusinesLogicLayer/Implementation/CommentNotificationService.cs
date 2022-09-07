@@ -25,7 +25,15 @@ namespace BusinesLogicLayer.Implementation
 
         public void SendCommentNotification(CommentResponse comment)
         {
-            throw new NotImplementedException();
+            CommentNotification not = new CommentNotification();
+            not.FromWhoId = comment.User.Id;
+            not.PostId = comment.PostId;
+            Post nov = new Post { PostId = comment.PostId };
+            nov = unit.PostRepository.SearchById(nov);
+            not.ForWhoId = nov.UserId;
+            not.Comment = comment.CommentText;
+            unit.CommentNotificationRepository.Add(not);
+            unit.Save();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace DataAccessLayer.Implementation
         }
         public void Add(Notification entity)
         {
-            throw new NotImplementedException();
+            context.Add(entity);
         }
 
         public void Delete(Notification entity)
