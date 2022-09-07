@@ -65,22 +65,28 @@ namespace DataAccessLayer.Implementation
             return context.Users.SingleOrDefault(u => u.UserName == user.UserName);
         }
 
-        public List<User> GetInboxUsers(int userId)
-        {
-            return null;
-        }
-
         public bool Unfollow(string username, int id)
         {
-            bool successful = false;
             User user=context.Users.Include(u => u.Following).SingleOrDefault(u => u.UserName == username);
             User unfollowed = user.Following.SingleOrDefault(u => u.Id == id);
             if(unfollowed!=null)
             {
                 user.Following.Remove(unfollowed);
-                successful = true;
+                return true;
             }
-            return successful;
+            return false;
+        }
+
+        public bool Follow(string username, int id)
+        {
+            User user = context.Users.Include(u => u.Following).SingleOrDefault(u => u.UserName == username);
+            User followed = user.Following.SingleOrDefault(u => u.Id == id);
+            if (followed != null)
+            {
+                user.Following.Add(followed);
+                return true;
+            }
+            return false;
         }
     }
 }

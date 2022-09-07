@@ -127,5 +127,24 @@ namespace SocialNetwork.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("follow/{username}/{unfollowId}")]
+        public IActionResult Follow([FromRoute(Name = "username")] string username, [FromRoute(Name = "unfollowId")] int id)
+        {
+            try
+            {
+                if (unit.UserService.Follow(username, id))
+                {
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

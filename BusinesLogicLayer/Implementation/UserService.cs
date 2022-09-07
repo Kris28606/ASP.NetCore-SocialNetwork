@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLayer.UnitOfWork;
 using Mapper;
 
 namespace BusinesLogicLayer.Implementation
@@ -88,6 +87,16 @@ namespace BusinesLogicLayer.Implementation
         public bool Unfollow(string username, int id)
         {
             bool result=unit.UserRepository.Unfollow(username, id);
+            if(result)
+            {
+                unit.Save();
+            }
+            return result;
+        }
+
+        public bool Follow(string username, int id)
+        {
+            bool result = unit.UserRepository.Follow(username, id);
             if(result)
             {
                 unit.Save();

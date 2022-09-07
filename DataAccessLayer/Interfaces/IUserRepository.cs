@@ -15,7 +15,7 @@ namespace DataAccessLayer.Interfaces
         public User SearchById(User entity);
 
         public User SearchByUsername(User user);
-        public List<User> GetInboxUsers(int userId);
         public bool Unfollow(string username, int id);
+        public bool Follow(string username, int id);
     }
 }
