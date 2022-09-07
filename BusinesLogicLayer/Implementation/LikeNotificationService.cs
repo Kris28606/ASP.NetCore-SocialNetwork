@@ -22,5 +22,34 @@ namespace BusinesLogicLayer.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteLikeNotification(int postId, string username)
+        {
+            LikeNotification not = new LikeNotification();
+            User fromUser = new User { UserName = username };
+            fromUser = unit.UserRepository.SearchByUsername(fromUser);
+            Post likedPost = new Post { PostId = postId };
+            likedPost = unit.PostRepository.SearchById(likedPost);
+            not.FromWhoId = fromUser.Id;
+            not.ForWhoId = likedPost.UserId;
+            not.PostId = postId;
+            unit.LikeNotificationsRepository.Delete(not);
+            unit.Save();
+        }
+
+        public void SendLikeNotification(int postId, string username)
+        {
+            LikeNotification not = new LikeNotification();
+            User fromUser = new User { UserName = username };
+            fromUser = unit.UserRepository.SearchByUsername(fromUser);
+            not.FromWhoId=fromUser.Id;
+            not.PostId = postId;
+            not.Date = DateTime.Now;
+            Post likedPost = new Post { PostId = postId };
+            likedPost = unit.PostRepository.SearchById(likedPost);
+            not.ForWhoId = likedPost.UserId;
+            unit.LikeNotificationsRepository.Add(not);
+            unit.Save();
+        }
     }
 }
