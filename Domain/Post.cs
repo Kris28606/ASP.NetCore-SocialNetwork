@@ -18,5 +18,9 @@ namespace Domain
         public String ImagePath { get; set; }
         public List<Reaction> Reactions { get; set; }
         public List<Comment> Comments { get; set; }
+        [JsonIgnore]
+        public List<LikeNotification> LikeNotifications { get; set; }
+        [JsonIgnore]
+        public List<CommentNotification> CommentNotifications { get; set; }
     }
 }
