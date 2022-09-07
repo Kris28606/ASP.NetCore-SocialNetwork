@@ -38,10 +38,10 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("all/{id}")]
-        public IActionResult GetPostsForHomePage([FromRoute(Name = "id")] int id)
+        [Route("all/{id}/{numOfPosts}")]
+        public IActionResult GetPostsForHomePage([FromRoute(Name = "id")] int id, [FromRoute(Name = "numOfPosts")] int numOfPosts)
         {
-            List<PostResponse> result=unit.PostService.GetAllForHome(id);
+            List<PostResponse> result=unit.PostService.GetAllForHome(id, numOfPosts);
             return Ok(result);
 
         }
