@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Notification
+    public class Notification : MyEntity
     {
         public int FromWhoId { get; set; }
         public User FromWho { get; set; }
