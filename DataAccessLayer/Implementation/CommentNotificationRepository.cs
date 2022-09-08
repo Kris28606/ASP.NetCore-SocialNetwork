@@ -31,6 +31,11 @@ namespace DataAccessLayer.Implementation
             throw new NotImplementedException();
         }
 
+        public List<Notification> GetAllForUser(User u)
+        {
+            return context.CommentNotification.Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
+        }
+
         public Notification SearchById(Notification entity)
         {
             throw new NotImplementedException();

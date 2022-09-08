@@ -9,5 +9,6 @@ namespace DataAccessLayer.Interfaces
 {
     public interface INotificationRepository : IRepository<Notification>
     {
+        public List<Notification> GetAllForUser(User u);
     }
 }

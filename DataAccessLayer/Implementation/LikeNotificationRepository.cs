@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Interfaces;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,11 @@ namespace DataAccessLayer.Implementation
         public List<Notification> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public List<Notification> GetAllForUser(User u)
+        {
+            return context.LikeNotifications.Include(n=> n.FromWho).Include(n=>n.Post).Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
         }
 
         public Notification SearchById(Notification entity)
