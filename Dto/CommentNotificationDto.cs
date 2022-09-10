@@ -9,8 +9,11 @@ namespace Dto
 {
     public class CommentNotificationDto : MyDto
     {
-        public UserDto FromWho { get; set; }
-        public PostResponse Post { get; set; }
+        public String FromWhoUsername { get; set; }
+        public int FromWhoId { get; set; }
+        public String FromWhoPicture { get; set; }
+        public int PostId { get; set; }
+        public String PostPicture { get; set; }
         public DateTime Date { get; set; }
         public String Comment { get; set; }
     }

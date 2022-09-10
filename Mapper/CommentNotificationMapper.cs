@@ -10,20 +10,16 @@ namespace Mapper
 {
     public class CommentNotificationMapper : GenericMapper<CommentNotificationDto, CommentNotification>
     {
-        private UserMapper userMapper;
-        private PostResponseMapper postMapper;
-        public CommentNotificationMapper()
-        {
-            this.userMapper = new UserMapper();
-            this.postMapper = new PostResponseMapper();
-        }
 
         public CommentNotificationDto toDto(CommentNotification entity)
         {
             CommentNotificationDto dto = new CommentNotificationDto();
             dto.Date = entity.Date;
-            dto.FromWho = userMapper.toDto(entity.FromWho);
-            dto.Post = postMapper.toDto(entity.Post);
+            dto.FromWhoId = entity.FromWhoId;
+            dto.FromWhoPicture = entity.FromWho.ProfilePicture;
+            dto.FromWhoUsername = entity.FromWho.UserName;
+            dto.PostId = entity.PostId;
+            dto.PostPicture = entity.Post.ImagePath;
             dto.Comment = entity.Comment;
 
             return dto;
