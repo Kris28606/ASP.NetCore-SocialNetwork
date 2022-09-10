@@ -40,7 +40,7 @@ namespace DataAccessLayer.Implementation
 
         public User SearchById(User entity)
         {
-            return context.Users.Include(u=>u.Posts).SingleOrDefault(s => s.Id == entity.Id);
+            return context.Users.Include(u=>u.Posts).Include(u=>u.Followers).Include(u=> u.Following).SingleOrDefault(s => s.Id == entity.Id);
         }
 
         public void Update(User entity)
@@ -62,7 +62,7 @@ namespace DataAccessLayer.Implementation
 
         public User SearchByUsername(User user)
         {
-            return context.Users.SingleOrDefault(u => u.UserName == user.UserName);
+            return context.Users.Include(u => u.Followers).Include(u => u.Following).SingleOrDefault(u => u.UserName == user.UserName);
         }
 
         public bool Unfollow(string username, int id)

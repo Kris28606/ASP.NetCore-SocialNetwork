@@ -47,13 +47,30 @@ namespace BusinesLogicLayer.Implementation
             return usersDto;
         }
 
-        public UserDto UcitajUsera(int id)
+        public UserDto UcitajUsera(int id, string username)
         {
             User u = new User { Id = id };
+            User ja = new User { UserName = username };
+            ja = unit.UserRepository.SearchByUsername(ja);
             u=unit.UserRepository.SearchById(u);
             if(u!=null)
             {
-                return mapper.toDto(u);
+               UserDto user=mapper.toDto(u);
+                ja.Followers.ForEach(f =>
+                {
+                    if (f.Id == u.Id)
+                    {
+                        user.FollowingMe = true;
+                    }
+                });
+                ja.Following.ForEach(f =>
+                {
+                    if (f.Id == u.Id)
+                    {
+                        user.IFollow = true;
+                    }
+                });
+                return user;
             }
             return null;
         }

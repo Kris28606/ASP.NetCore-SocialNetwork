@@ -20,12 +20,12 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("one/{id}")]
-        public IActionResult GetUser([FromRoute(Name ="id")] int id)
+        [Route("one/{id}/{username}")]
+        public IActionResult GetUser([FromRoute(Name ="id")] int id, [FromRoute(Name="username")] string username)
         {
             try
             {
-                UserDto u=unit.UserService.UcitajUsera(id);
+                UserDto u=unit.UserService.UcitajUsera(id, username);
                 if(u!=null)
                 {
                     return Ok(u);

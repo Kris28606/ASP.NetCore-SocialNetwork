@@ -9,7 +9,7 @@ namespace BusinesLogicLayer.Interfaces
 {
     public interface IUserService : IService<UserDto>
     {
-        public UserDto UcitajUsera(int id);
+        public UserDto UcitajUsera(int id, string username);
         public List<UserDto> Search(string kriterijum, int id);
         public bool ChangePicture(UserDto user);
         public UserDto UcitajUseraByUsername(String username);
