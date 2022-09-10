@@ -11,5 +11,6 @@ namespace BusinesLogicLayer.Interfaces
     public interface ICommentNotificationService : INotificationService
     {
         public void SendCommentNotification(CommentResponse comment);
+        public List<CommentNotificationDto> GetAllForUser(int id);
     }
 }
