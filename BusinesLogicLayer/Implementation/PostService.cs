@@ -158,6 +158,12 @@ namespace BusinesLogicLayer.Implementation
         {
             User u = new User { UserName=dto.Username };
             u = unit.UserRepository.SearchByUsername(u);
+            Post p = new Post { PostId = dto.PostId };
+            p = unit.PostRepository.SearchById(p);
+            if(p.UserId==u.Id)
+            {
+                return null; 
+            }
             Comment c = new Comment();
             c.CommentText = dto.CommentText;
             c.PostId = dto.PostId;
