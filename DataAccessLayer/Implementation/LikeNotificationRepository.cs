@@ -39,7 +39,9 @@ namespace DataAccessLayer.Implementation
 
         public List<Notification> GetAllForUser(User u)
         {
-            return context.LikeNotifications.Include(n=> n.FromWho).Include(n=>n.Post).Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
+            List<Notification> list= context.LikeNotifications.Include(n=> n.FromWho).Include(n=>n.Post).Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
+            list = list.OrderBy(l => l.Date).ToList();
+            return list;
         }
 
         public Notification SearchById(Notification entity)
