@@ -111,9 +111,9 @@ namespace BusinesLogicLayer.Implementation
             return result;
         }
 
-        public bool Follow(string username, int id)
+        public bool AddFollower(int userId, int followId)
         {
-            bool result = unit.UserRepository.Follow(username, id);
+            bool result = unit.UserRepository.AddFollower(userId, followId);
             if(result)
             {
                 unit.Save();

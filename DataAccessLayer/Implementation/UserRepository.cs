@@ -77,13 +77,13 @@ namespace DataAccessLayer.Implementation
             return false;
         }
 
-        public bool Follow(string username, int id)
+        public bool AddFollower(int userId, int followId)
         {
-            User user = context.Users.Include(u => u.Following).SingleOrDefault(u => u.UserName == username);
-            User followed = user.Following.SingleOrDefault(u => u.Id == id);
+            User user = context.Users.Include(u => u.Followers).SingleOrDefault(u => u.Id == userId);
+            User followed = context.Users.SingleOrDefault(u => u.Id == followId);
             if (followed != null)
             {
-                user.Following.Add(followed);
+                user.Followers.Add(followed);
                 return true;
             }
             return false;

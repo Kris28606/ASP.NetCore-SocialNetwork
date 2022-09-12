@@ -21,18 +21,19 @@ namespace SocialNetwork.Controllers
         [Authorize]
         [HttpGet]
         [Route("one/{id}/{username}")]
-        public IActionResult GetUser([FromRoute(Name ="id")] int id, [FromRoute(Name="username")] string username)
+        public IActionResult GetUser([FromRoute(Name = "id")] int id, [FromRoute(Name = "username")] string username)
         {
             try
             {
-                UserDto u=unit.UserService.UcitajUsera(id, username);
-                if(u!=null)
+                UserDto u = unit.UserService.UcitajUsera(id, username);
+                if (u != null)
                 {
                     return Ok(u);
                 }
                 return NotFound();
 
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -80,7 +81,7 @@ namespace SocialNetwork.Controllers
             var request = HttpContext.Request;
             var kriterijum = "";
 
-            using(StreamReader reader=new StreamReader(request.Body,Encoding.UTF8, true, 1024, true))
+            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8, true, 1024, true))
             {
                 kriterijum = await reader.ReadLineAsync();
             }
@@ -92,19 +93,21 @@ namespace SocialNetwork.Controllers
         [Authorize]
         [HttpPost]
         [Route("changePicture")]
-        public IActionResult changeProfilePicture([FromBody]UserDto u)
+        public IActionResult changeProfilePicture([FromBody] UserDto u)
         {
             try
             {
-                if(unit.UserService.ChangePicture(u))
+                if (unit.UserService.ChangePicture(u))
                 {
                     return Ok();
-                } else
+                }
+                else
                 {
                     return BadRequest();
                 }
-                
-            } catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -113,29 +116,11 @@ namespace SocialNetwork.Controllers
         [Authorize]
         [HttpDelete]
         [Route("unfollow/{username}/{unfollowId}")]
-        public IActionResult Unfollow([FromRoute(Name = "username")] string username, [FromRoute(Name ="unfollowId")] int id)
+        public IActionResult Unfollow([FromRoute(Name = "username")] string username, [FromRoute(Name = "unfollowId")] int id)
         {
             try
             {
-                if(unit.UserService.Unfollow(username, id))
-                {
-                    return Ok();
-                }
-                return BadRequest();
-            } catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [Authorize]
-        [HttpDelete]
-        [Route("follow/{username}/{unfollowId}")]
-        public IActionResult Follow([FromRoute(Name = "username")] string username, [FromRoute(Name = "unfollowId")] int id)
-        {
-            try
-            {
-                if (unit.UserService.Follow(username, id))
+                if (unit.UserService.Unfollow(username, id))
                 {
                     return Ok();
                 }
@@ -146,5 +131,28 @@ namespace SocialNetwork.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("follow/{userId}/{followId}")]
+        public IActionResult Follow([FromRoute(Name = "userId")] int userId, [FromRoute(Name = "followId")] int followId)
+        {
+            try
+            {
+                if (unit.UserService.AddFollower(userId, followId))
+                {
+                    unit.FollowNotificationService.ConfirmFollow(userId, followId);
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
     }
 }
