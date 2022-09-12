@@ -8,5 +8,6 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IFollowNotificationRepository : INotificationRepository
     {
+        public void ConfirmFollow(int userId, int followId);
     }
 }

@@ -22,6 +22,12 @@ namespace BusinesLogicLayer.Implementation
             mapper = new FollowNotificationMapper();
         }
 
+        public void ConfirmFollow(int userId, int followId)
+        {
+            unit.FollowNotificationRepository.ConfirmFollow(userId, followId);
+            unit.Save();
+        }
+
         public bool Create(Notification entity)
         {
             throw new NotImplementedException();

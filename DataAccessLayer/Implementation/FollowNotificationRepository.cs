@@ -19,7 +19,15 @@ namespace DataAccessLayer.Implementation
         }
         public void Add(Notification entity)
         {
-            throw new NotImplementedException();
+            context.Add(entity);
+        }
+
+        public void ConfirmFollow(int userId, int followId)
+        {
+            FollowNotification not = context.FollowNotifications.SingleOrDefault(n => n.FromWhoId == followId && n.ForWhoId == userId);
+            not.Status = FollowStatus.Confirmed;
+            not.Date = DateTime.Now;
+            context.Update(not);
         }
 
         public void Delete(Notification entity)
@@ -41,7 +49,7 @@ namespace DataAccessLayer.Implementation
 
         public Notification SearchById(Notification entity)
         {
-            throw new NotImplementedException();
+            return context.FollowNotifications.SingleOrDefault(n => n.FromWhoId == entity.FromWhoId && n.ForWhoId == entity.ForWhoId);
         }
 
         public void Update(Notification entity)
