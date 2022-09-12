@@ -11,6 +11,7 @@ namespace Dto
         public int FromWhoId { get; set; }
         public string FromWhoUsername { get; set; }
         public string FromWhoPicture { get; set; }
+        public bool Confirmed { get; set; } = false;
         public DateTime Date { get; set; }
     }
 }

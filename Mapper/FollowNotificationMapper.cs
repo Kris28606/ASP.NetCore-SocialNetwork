@@ -17,6 +17,10 @@ namespace Mapper
             dto.FromWhoUsername = entity.FromWho.UserName;
             dto.FromWhoId = entity.FromWhoId;
             dto.Date = entity.Date;
+            if(entity.Status==FollowStatus.Confirmed)
+            {
+                dto.Confirmed = true;
+            }
             return dto;
         }
 
