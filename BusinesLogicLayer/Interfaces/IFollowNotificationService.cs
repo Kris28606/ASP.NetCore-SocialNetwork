@@ -13,5 +13,6 @@ namespace BusinesLogicLayer.Interfaces
         public FollowNotificationDto CreateFollow(int id, string username);
         public List<FollowNotificationDto> GetAllForUser(int id);
         public void ConfirmFollow(int userId, int followId);
+        public FollowNotificationDto SearchActiveFollow(int forId, int fromId);
     }
 }

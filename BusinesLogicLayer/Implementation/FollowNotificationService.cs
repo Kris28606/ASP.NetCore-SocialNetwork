@@ -61,5 +61,22 @@ namespace BusinesLogicLayer.Implementation
             });
             return notifDto;
         }
+
+        public FollowNotificationDto SearchActiveFollow(int forId, int fromId)
+        {
+            FollowNotification not = new FollowNotification { 
+                ForWhoId=forId,
+                FromWhoId=fromId
+            };
+
+            not=(FollowNotification)unit.FollowNotificationRepository.SearchById(not);
+            if(not.Status==FollowStatus.Waiting)
+            {
+                return mapper.toDto(not);
+            } else
+            {
+                return null;
+            }
+        }
     }
 }
