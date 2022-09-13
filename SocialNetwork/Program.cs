@@ -1,10 +1,12 @@
 using BusinesLogicLayer.UnitOfWork;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using SocialNetwork.HubConfig;
 using System.Text;
 using WebApi2.Auth;
 
@@ -21,6 +23,7 @@ builder.Services.AddDbContext<UserContext>(options=>
 });
 builder.Services.AddIdentity<User, IdentityRole<int>>().AddEntityFrameworkStores<UserContext>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(options=> {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     })
@@ -38,6 +41,16 @@ builder.Services.AddAuthentication(options=> {
         };
     });
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllHeaders",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -50,13 +63,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(p =>
-{
-    p.AllowAnyHeader();
-    p.AllowAnyMethod();
-    p.WithOrigins("http://localhost:4200");
-    p.AllowCredentials();
-});
+app.UseCors("AllowAllHeaders");
+//app.UseCors(p =>
+//{
+//    p.AllowAnyHeader();
+//    p.AllowAnyMethod();
+//    p.AllowAnyOrigin();
+//    //p.AllowCredentials();
+//});
 
 app.UseStaticFiles(new StaticFileOptions()
 {
@@ -71,5 +85,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<MyHub>("/hub");
 
 app.Run();
