@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mapper;
+using Dto;
 
 namespace BusinesLogicLayer.Implementation
 {
@@ -53,6 +54,7 @@ namespace BusinesLogicLayer.Implementation
             User ja = new User { UserName = username };
             ja = unit.UserRepository.SearchByUsername(ja);
             u=unit.UserRepository.SearchById(u);
+            FollowNotification not = (FollowNotification)unit.FollowNotificationRepository.SearchById(new FollowNotification { FromWhoId = ja.Id, ForWhoId = id });
             if(u!=null)
             {
                UserDto user=mapper.toDto(u);
@@ -70,6 +72,10 @@ namespace BusinesLogicLayer.Implementation
                         user.IFollow = true;
                     }
                 });
+                if(not.Status==FollowStatus.Waiting)
+                {
+                    user.RequestSent = true;
+                }
                 return user;
             }
             return null;

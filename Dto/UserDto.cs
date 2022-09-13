@@ -13,5 +13,6 @@ namespace SocialNetwork.Dto
         public String ProfilePicture { get; set; }
         public bool FollowingMe { get; set; } = false;
         public bool IFollow { get; set; } = false;
+        public bool RequestSent { get; set; } = false;
     }
 }
