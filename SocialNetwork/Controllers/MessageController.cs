@@ -1,7 +1,6 @@
 ﻿using BusinesLogicLayer.UnitOfWork;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SocialNetwork.Controllers
@@ -48,7 +47,7 @@ namespace SocialNetwork.Controllers
         [Authorize]
         [HttpPost]
         [Route("send")]
-        public IActionResult SendMeesage([FromBody]MessageDto mess)
+        public async Task<IActionResult> SendMeesage([FromBody]MessageDto mess)
         {
             try
             {

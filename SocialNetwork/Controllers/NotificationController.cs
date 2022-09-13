@@ -47,8 +47,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                unit.FollowNotificationService.CreateFollow(id, username);
-                return Ok();
+                return Ok(unit.FollowNotificationService.CreateFollow(id, username));
             } catch(Exception ex)
             {
                 return BadRequest(ex.Message);
