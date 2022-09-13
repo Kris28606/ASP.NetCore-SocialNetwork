@@ -11,7 +11,7 @@ namespace BusinesLogicLayer.Interfaces
 {
     public interface IPostService : IService<PostRequest>
     {
-        public List<PostResponse> GetAllMyPosts(int userId);
+        public List<PostResponse> GetAllMyPosts(int userId, string username);
         public List<PostResponse> GetAllForHome(int i, int numOfPosts);
         public bool LikeIt(int postId, string username);
         public bool UnlikeIt(int postId, string username);

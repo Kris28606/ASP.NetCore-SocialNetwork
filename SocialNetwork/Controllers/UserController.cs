@@ -62,10 +62,10 @@ namespace SocialNetwork.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("all/{id}")]
-        public IActionResult GetAllMyPosts([FromRoute(Name = "id")] int id)
+        [Route("all/{id}/{username}")]
+        public IActionResult GetAllMyPosts([FromRoute(Name = "id")] int id, [FromRoute(Name="username")] string username)
         {
-            List<PostResponse> lista = unit.PostService.GetAllMyPosts(id);
+            List<PostResponse> lista = unit.PostService.GetAllMyPosts(id, username);
             if (lista == null)
             {
                 return BadRequest("Greska");

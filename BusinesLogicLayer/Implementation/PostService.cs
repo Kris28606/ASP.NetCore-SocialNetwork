@@ -54,18 +54,19 @@ namespace BusinesLogicLayer.Implementation
             return false;
         }
 
-        public List<PostResponse> GetAllMyPosts(int userId)
+        public List<PostResponse> GetAllMyPosts(int userId, string username)
         {
             try
             {
                 List<Post> posts=unit.PostRepository.GetMyPosts(userId);
+                User u = unit.UserRepository.SearchByUsername(new User { UserName = username });
                 List<PostResponse> responses = new List<PostResponse>();
                 posts.ForEach(p =>
                 {
                     PostResponse response = responseMapper.toDto(p);
                     p.Reactions.ForEach(r =>
                     {
-                        if (r.UserId == userId)
+                        if (r.UserId == u.Id)
                         {
                             response.ILiked = true;
                         }
