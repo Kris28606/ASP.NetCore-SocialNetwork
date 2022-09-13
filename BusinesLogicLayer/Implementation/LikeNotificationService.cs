@@ -57,7 +57,7 @@ namespace BusinesLogicLayer.Implementation
             return notifDto;
         }
 
-        public void SendLikeNotification(int postId, string username)
+        public LikeNotificationDto SendLikeNotification(int postId, string username)
         {
             LikeNotification not = new LikeNotification();
             User fromUser = new User { UserName = username };
@@ -69,11 +69,12 @@ namespace BusinesLogicLayer.Implementation
             likedPost = unit.PostRepository.SearchById(likedPost);
             if(fromUser.Id==likedPost.UserId)
             {
-                return;
+                return null;
             }
             not.ForWhoId = likedPost.UserId;
             unit.LikeNotificationsRepository.Add(not);
             unit.Save();
+            return mapper.toDto(not);
         }
     }
 }

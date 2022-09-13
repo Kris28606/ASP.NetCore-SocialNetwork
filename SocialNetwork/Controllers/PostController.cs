@@ -56,7 +56,11 @@ namespace SocialNetwork.Controllers
                 bool result = unit.PostService.LikeIt(postId, user);
                 if(result)
                 {
-                    unit.LikeNotificationService.SendLikeNotification(postId, user);
+                    LikeNotificationDto dto=unit.LikeNotificationService.SendLikeNotification(postId, user);
+                    if(dto!=null)
+                    {
+                        return Ok(dto);
+                    }
                     return Ok();
                 }
                 return BadRequest();

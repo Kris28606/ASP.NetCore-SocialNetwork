@@ -40,7 +40,7 @@ namespace DataAccessLayer.Implementation
         public List<Notification> GetAllForUser(User u)
         {
             List<Notification> list= context.LikeNotifications.Include(n=> n.FromWho).Include(n=>n.Post).Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
-            list = list.OrderBy(l => l.Date).ToList();
+            list = list.OrderByDescending(l => l.Date).ToList();
             return list;
         }
 

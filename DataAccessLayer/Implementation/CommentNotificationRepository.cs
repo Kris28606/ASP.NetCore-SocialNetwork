@@ -35,7 +35,7 @@ namespace DataAccessLayer.Implementation
         public List<Notification> GetAllForUser(User u)
         {
             List<Notification> list=context.CommentNotification.Include(c=> c.FromWho).Include(c=> c.Post).Where(n => n.ForWhoId == u.Id).ToList().OfType<Notification>().ToList();
-            list= list.OrderBy(l => l.Date).ToList();
+            list= list.OrderByDescending(l => l.Date).ToList();
             return list;
         }
 

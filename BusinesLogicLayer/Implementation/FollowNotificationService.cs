@@ -33,7 +33,7 @@ namespace BusinesLogicLayer.Implementation
             throw new NotImplementedException();
         }
 
-        public void CreateFollow(int id, string username)
+        public FollowNotificationDto CreateFollow(int id, string username)
         {
             User following = new User { UserName = username };
             User followed = new User { Id = id };
@@ -47,6 +47,7 @@ namespace BusinesLogicLayer.Implementation
             };
             unit.LikeNotificationsRepository.Add(not);
             unit.Save();
+            return mapper.toDto(not);
         }
 
         public List<FollowNotificationDto> GetAllForUser(int id)

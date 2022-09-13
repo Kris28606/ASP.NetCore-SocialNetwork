@@ -9,7 +9,7 @@ namespace BusinesLogicLayer.Interfaces
 {
     public interface ILikeNotificationService : INotificationService
     {
-        public void SendLikeNotification(int postId, string username);
+        public LikeNotificationDto SendLikeNotification(int postId, string username);
         public void DeleteLikeNotification(int postId, string username);
         public List<LikeNotificationDto> GetAllForUser(int id);
     }
