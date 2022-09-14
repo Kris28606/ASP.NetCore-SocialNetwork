@@ -56,5 +56,19 @@ namespace DataAccessLayer.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public bool ExistActiveFollow(Notification entity)
+        {
+            List<FollowNotification> not = context.FollowNotifications.Where(n => n.FromWhoId == entity.FromWhoId && n.ForWhoId == entity.ForWhoId).ToList();
+            bool postoji = false;
+            not.ForEach(n =>
+            {
+                if (n.Status == FollowStatus.Waiting)
+                {
+                    postoji = true;
+                }
+            });
+            return postoji;
+        }
     }
 }

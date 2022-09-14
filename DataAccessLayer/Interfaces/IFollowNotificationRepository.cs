@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace DataAccessLayer.Interfaces
     public interface IFollowNotificationRepository : INotificationRepository
     {
         public void ConfirmFollow(int userId, int followId);
+        public bool ExistActiveFollow(Notification not);
     }
 }
