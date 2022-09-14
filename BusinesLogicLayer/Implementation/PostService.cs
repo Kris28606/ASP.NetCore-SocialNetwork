@@ -135,6 +135,17 @@ namespace BusinesLogicLayer.Implementation
             users.ForEach(u =>
             {
                 UserDto dto = userMapper.toDto(u);
+                User ja = unit.UserRepository.SearchByUsername(new User { UserName=user});
+                Notification not = new Notification
+                {
+                    ForWhoId = dto.Id,
+                    FromWhoId = ja.Id
+                };
+                bool exist = unit.FollowNotificationRepository.ExistActiveFollow(not);
+                if(exist)
+                {
+                    dto.RequestSent = true;
+                }
                 User pronadjen = u.Followers.Find(u => u.UserName == user);
                 if (pronadjen != null) dto.IFollow = true;
                 User pronadjen2 = u.Following.Find(u => u.UserName == user);

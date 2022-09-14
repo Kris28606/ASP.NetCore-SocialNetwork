@@ -39,6 +39,12 @@ namespace BusinesLogicLayer.Implementation
             // da li oni mene prate
             users.ForEach(u => {
                 UserDto dto = mapper.toDto(u);
+                Notification not = new Notification { FromWhoId = id, ForWhoId = dto.Id };
+                bool exist = unit.FollowNotificationRepository.ExistActiveFollow(not);
+                if(exist)
+                {
+                    dto.RequestSent = true;
+                }
                 User pronadjen=u.Followers.Find(u => u.Id == id);
                 if(pronadjen!=null)  dto.IFollow = true;
                 User pronadjen2 = u.Following.Find(u => u.Id == id);
@@ -54,10 +60,14 @@ namespace BusinesLogicLayer.Implementation
             User ja = new User { UserName = username };
             ja = unit.UserRepository.SearchByUsername(ja);
             u=unit.UserRepository.SearchById(u);
-            FollowNotification not = (FollowNotification)unit.FollowNotificationRepository.SearchById(new FollowNotification { FromWhoId = ja.Id, ForWhoId = id });
             if(u!=null)
             {
+               bool not = unit.FollowNotificationRepository.ExistActiveFollow(new Notification { FromWhoId = ja.Id, ForWhoId = id });
                UserDto user=mapper.toDto(u);
+                if(not)
+                {
+                    user.RequestSent = true;
+                }
                 ja.Followers.ForEach(f =>
                 {
                     if (f.Id == u.Id)
@@ -65,16 +75,15 @@ namespace BusinesLogicLayer.Implementation
                         user.FollowingMe = true;
                     }
                 });
-                ja.Following.ForEach(f =>
+                if (!user.RequestSent)
                 {
-                    if (f.Id == u.Id)
+                    ja.Following.ForEach(f =>
                     {
-                        user.IFollow = true;
-                    }
-                });
-                if(not.Status==FollowStatus.Waiting)
-                {
-                    user.RequestSent = true;
+                        if (f.Id == u.Id)
+                        {
+                            user.IFollow = true;
+                        }
+                    });
                 }
                 return user;
             }
