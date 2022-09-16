@@ -16,6 +16,8 @@ namespace DataAccessLayer.UnitOfWork
         public ILikeNotificationsRepository LikeNotificationsRepository { get; set; }
         public ICommentNotificationRepository CommentNotificationRepository { get; set; }
         public IFollowNotificationRepository FollowNotificationRepository { get; set; }
+        public IReactionRepository ReactionRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
         public void Save();
     }
 }

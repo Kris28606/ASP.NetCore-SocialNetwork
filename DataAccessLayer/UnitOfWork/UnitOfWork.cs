@@ -17,6 +17,8 @@ namespace DataAccessLayer.UnitOfWork
             this.LikeNotificationsRepository = new LikeNotificationRepository(context);
             this.CommentNotificationRepository = new CommentNotificationRepository(context);
             this.FollowNotificationRepository = new FollowNotificationRepository(context);
+            this.ReactionRepository = new ReactionRepository(context);
+            this.CommentRepository = new CommentRepository(context);
             this.context = context;
         }
 
@@ -27,6 +29,8 @@ namespace DataAccessLayer.UnitOfWork
         public ILikeNotificationsRepository LikeNotificationsRepository { get; set; }
         public ICommentNotificationRepository CommentNotificationRepository { get; set; }
         public IFollowNotificationRepository FollowNotificationRepository { get; set; }
+        public IReactionRepository ReactionRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
 
         public void Save()
         {

@@ -1,7 +1,6 @@
 ﻿using BusinesLogicLayer.Interfaces;
 using DataAccessLayer.UnitOfWork;
 using Domain;
-using Dto;
 using Mapper;
 using SocialNetwork.Dto;
 
@@ -97,90 +96,6 @@ namespace BusinesLogicLayer.Implementation
                 response.Add(pr);
             }
             return response;
-        }
-
-        public bool LikeIt(int postId, string username)
-        {
-            User u = new User { UserName = username };
-            u= unit.UserRepository.SearchByUsername(u);
-            unit.PostRepository.LikeIt(postId, u.Id);
-            unit.Save();
-            return true;
-        }
-
-        public bool UnlikeIt(int postId, string username)
-        {
-            User u = new User { UserName = username };
-            u = unit.UserRepository.SearchByUsername(u);
-            bool result=unit.PostRepository.UnlikeIt(postId, u.Id);
-            if(result)
-            {
-                unit.Save();
-                return true;
-            }
-            return false;
-        }
-
-        public List<UserDto> GetLikes(int postId, string user)
-        {
-            List<User> users = unit.PostRepository.GetLikes(postId);
-            List<UserDto> usersDto = new List<UserDto>();
-            users.ForEach(u =>
-            {
-                UserDto dto = userMapper.toDto(u);
-                User ja = unit.UserRepository.SearchByUsername(new User { UserName=user});
-                Notification not = new Notification
-                {
-                    ForWhoId = dto.Id,
-                    FromWhoId = ja.Id
-                };
-                bool exist = unit.FollowNotificationRepository.ExistActiveFollow(not);
-                if(exist)
-                {
-                    dto.RequestSent = true;
-                }
-                User pronadjen = u.Followers.Find(u => u.UserName == user);
-                if (pronadjen != null) dto.IFollow = true;
-                User pronadjen2 = u.Following.Find(u => u.UserName == user);
-                if (pronadjen2 != null) dto.FollowingMe = true;
-                usersDto.Add(dto);
-            });
-            return usersDto;
-        }
-
-        public List<CommentResponse> GetComments(int postId)
-        {
-            List<Comment> comments = unit.PostRepository.GetComments(postId);
-            List<CommentResponse> commentsDto = new List<CommentResponse>();
-            comments.ForEach(c =>
-            {
-                commentsDto.Add(commentMapper.toDto(c));
-            });
-            return commentsDto;
-        }
-
-        public CommentResponse PostComment(CommentRequest dto)
-        {
-            User u = new User { UserName=dto.Username };
-            u = unit.UserRepository.SearchByUsername(u);
-            Post p = new Post { PostId = dto.PostId };
-            p = unit.PostRepository.SearchById(p);
-            if(p.UserId==u.Id)
-            {
-                return null; 
-            }
-            Comment c = new Comment();
-            c.CommentText = dto.CommentText;
-            c.PostId = dto.PostId;
-            c.User = u;
-            c.DatumVreme = DateTime.Now;
-            Comment result=unit.PostRepository.PostComment(c);
-            if (result!=null)
-            {
-                unit.Save();
-                return commentMapper.toDto(c);
-            }
-            return null;
         }
     }
 }
