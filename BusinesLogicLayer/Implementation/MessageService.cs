@@ -4,11 +4,6 @@ using Domain;
 using Dto;
 using Mapper;
 using SocialNetwork.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinesLogicLayer.Implementation
 {
@@ -18,9 +13,9 @@ namespace BusinesLogicLayer.Implementation
         private UserMapper userMapper;
         private MessageMapper messageMapper;
 
-        public MessageService(UserContext context)
+        public MessageService(IUnitOfWork unit)
         {
-            this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
+            this.unit = unit;
             userMapper = new UserMapper();
             messageMapper=new MessageMapper();
         }

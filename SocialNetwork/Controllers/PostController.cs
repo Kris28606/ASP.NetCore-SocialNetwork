@@ -1,10 +1,7 @@
 ﻿
-using BusinesLogicLayer.UnitOfWork;
-using Domain;
+using BusinesLogicLayer.Interfaces;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Dto;
 
@@ -14,11 +11,15 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IUnitOfWorkService unit;
+        private readonly IPostService postService;
+        private readonly ILikeNotificationService likeService;
+        private readonly ICommentNotificationService commentService;
 
-        public PostController(IUnitOfWorkService unit)
+        public PostController(IPostService postService, ILikeNotificationService likeService, ICommentNotificationService commentService)
         {
-            this.unit = unit;
+            this.postService = postService;
+            this.likeService = likeService;
+            this.commentService = commentService;
         }
 
 
@@ -28,7 +29,7 @@ namespace SocialNetwork.Controllers
         public IActionResult CreateNew([FromBody]PostRequest pr)
         {
             
-            bool result = unit.PostService.Create(pr);
+            bool result = postService.Create(pr);
             if (result)
             {
                 return Ok("Uspesno ste sacuvali post!");
@@ -41,7 +42,7 @@ namespace SocialNetwork.Controllers
         [Route("all/{id}/{numOfPosts}")]
         public IActionResult GetPostsForHomePage([FromRoute(Name = "id")] int id, [FromRoute(Name = "numOfPosts")] int numOfPosts)
         {
-            List<PostResponse> result=unit.PostService.GetAllForHome(id, numOfPosts);
+            List<PostResponse> result= postService.GetAllForHome(id, numOfPosts);
             return Ok(result);
 
         }
@@ -53,10 +54,10 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                bool result = unit.PostService.LikeIt(postId, user);
+                bool result = postService.LikeIt(postId, user);
                 if(result)
                 {
-                    LikeNotificationDto dto=unit.LikeNotificationService.SendLikeNotification(postId, user);
+                    LikeNotificationDto dto=likeService.SendLikeNotification(postId, user);
                     if(dto!=null)
                     {
                         return Ok(dto);
@@ -78,10 +79,10 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                bool result = unit.PostService.UnlikeIt(postId, username);
+                bool result = postService.UnlikeIt(postId, username);
                 if (result)
                 {
-                    unit.LikeNotificationService.DeleteLikeNotification(postId, username);
+                    likeService.DeleteLikeNotification(postId, username);
                     return Ok();
                 }
                 return BadRequest();
@@ -99,7 +100,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                List<UserDto> users = unit.PostService.GetLikes(postId, user);
+                List<UserDto> users = postService.GetLikes(postId, user);
                 if(users!=null)
                 {
                     return Ok(users);
@@ -118,7 +119,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                List<CommentResponse> comments = unit.PostService.GetComments(postId);
+                List<CommentResponse> comments = postService.GetComments(postId);
                 if (comments != null)
                 {
                     return Ok(comments);
@@ -138,10 +139,10 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                CommentResponse result = unit.PostService.PostComment(com);
+                CommentResponse result = postService.PostComment(com);
                 if(result!=null)
                 {
-                    unit.CommentNotificationService.SendCommentNotification(result);
+                    commentService.SendCommentNotification(result);
                     return Ok(result);
                 }
                 return BadRequest();

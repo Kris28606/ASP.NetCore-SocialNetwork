@@ -1,20 +1,15 @@
 ﻿using BusinesLogicLayer.Interfaces;
 using DataAccessLayer.UnitOfWork;
 using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinesLogicLayer.Implementation
 {
     public class NotificationService : INotificationService
     {
         private readonly IUnitOfWork unit;
-        public NotificationService(UserContext context)
+        public NotificationService(IUnitOfWork unit)
         {
-            unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
+            this.unit = unit;
         }
         public bool Create(Notification entity)
         {

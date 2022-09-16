@@ -1,6 +1,5 @@
-﻿using BusinesLogicLayer.UnitOfWork;
+﻿using BusinesLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Dto;
 using System.Text;
@@ -11,11 +10,16 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWorkService unit;
+        //private readonly IUnitOfWorkService unit;
+        private readonly IUserService service;
+        private readonly IPostService postService;
+        private readonly IFollowNotificationService followService;
 
-        public UserController(IUnitOfWorkService unit)
+        public UserController(IUserService service, IPostService postService, IFollowNotificationService followService)
         {
-            this.unit = unit;
+            this.service = service;
+            this.postService = postService;
+            this.followService = followService;
         }
 
         [Authorize]
@@ -25,7 +29,8 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                UserDto u = unit.UserService.UcitajUsera(id, username);
+                ///UserDto u = unit.UserService.UcitajUsera(id, username);
+                UserDto u = service.UcitajUsera(id, username);
                 if (u != null)
                 {
                     return Ok(u);
@@ -46,7 +51,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                UserDto u = unit.UserService.UcitajUseraByUsername(username);
+                UserDto u = service.UcitajUseraByUsername(username);
                 if (u != null)
                 {
                     return Ok(u);
@@ -65,7 +70,7 @@ namespace SocialNetwork.Controllers
         [Route("all/{id}/{username}")]
         public IActionResult GetAllMyPosts([FromRoute(Name = "id")] int id, [FromRoute(Name="username")] string username)
         {
-            List<PostResponse> lista = unit.PostService.GetAllMyPosts(id, username);
+            List<PostResponse> lista = postService.GetAllMyPosts(id, username);
             if (lista == null)
             {
                 return BadRequest("Greska");
@@ -87,7 +92,7 @@ namespace SocialNetwork.Controllers
             }
             kriterijum = kriterijum.Remove(0, 1);
             kriterijum = kriterijum.Remove(kriterijum.Length - 1);
-            return Ok(unit.UserService.Search(kriterijum, id));
+            return Ok(service.Search(kriterijum, id));
         }
 
         [Authorize]
@@ -97,7 +102,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                if (unit.UserService.ChangePicture(u))
+                if (service.ChangePicture(u))
                 {
                     return Ok();
                 }
@@ -120,7 +125,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                if (unit.UserService.Unfollow(username, id))
+                if (service.Unfollow(username, id))
                 {
                     return Ok();
                 }
@@ -139,9 +144,9 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                if (unit.UserService.AddFollower(userId, followId))
+                if (service.AddFollower(userId, followId))
                 {
-                    unit.FollowNotificationService.ConfirmFollow(userId, followId);
+                    followService.ConfirmFollow(userId, followId);
                     return Ok();
                 }
                 return BadRequest();

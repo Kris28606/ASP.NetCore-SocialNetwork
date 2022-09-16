@@ -1,16 +1,9 @@
 ﻿using BusinesLogicLayer.Interfaces;
-using BusinesLogicLayer.UnitOfWork;
 using DataAccessLayer.UnitOfWork;
 using Domain;
 using Dto;
 using Mapper;
-using Microsoft.AspNetCore.Hosting;
 using SocialNetwork.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinesLogicLayer.Implementation
 {
@@ -22,9 +15,9 @@ namespace BusinesLogicLayer.Implementation
         private readonly UserMapper userMapper;
         private readonly CommentResponseMapper commentMapper;
 
-        public PostService(UserContext context)
+        public PostService(IUnitOfWork unit)
         {
-            this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
+            this.unit = unit;
             this.responseMapper = new PostResponseMapper();
             this.requestMapper = new PostRequestMapper();
             this.userMapper = new UserMapper();

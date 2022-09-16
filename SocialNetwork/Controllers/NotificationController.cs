@@ -1,6 +1,5 @@
-﻿using BusinesLogicLayer.UnitOfWork;
+﻿using BusinesLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SocialNetwork.Controllers
@@ -9,11 +8,15 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class NotificationController : ControllerBase
     {
-        private readonly IUnitOfWorkService unit;
+        private readonly ILikeNotificationService likeService;
+        private readonly IFollowNotificationService followService;
+        private readonly ICommentNotificationService commentService;
 
-        public NotificationController(IUnitOfWorkService unit)
+        public NotificationController(ILikeNotificationService likeService, IFollowNotificationService followService, ICommentNotificationService commentService)
         {
-            this.unit = unit;
+            this.likeService = likeService;
+            this.followService = followService;
+            this.commentService = commentService;
         }
 
         [Authorize]
@@ -21,7 +24,7 @@ namespace SocialNetwork.Controllers
         [Route("like/{id}")]
         public IActionResult GetLikeNotifications([FromRoute(Name ="id")] int id)
         {
-            return Ok(unit.LikeNotificationService.GetAllForUser(id));
+            return Ok(likeService.GetAllForUser(id));
         }
 
         [Authorize]
@@ -29,7 +32,7 @@ namespace SocialNetwork.Controllers
         [Route("comment/{id}")]
         public IActionResult GetCommentNotifications([FromRoute(Name = "id")] int id)
         {
-            return Ok(unit.CommentNotificationService.GetAllForUser(id));
+            return Ok(commentService.GetAllForUser(id));
         }
 
         [Authorize]
@@ -37,7 +40,7 @@ namespace SocialNetwork.Controllers
         [Route("follow/{id}")]
         public IActionResult GetFollowNotifications([FromRoute(Name = "id")] int id)
         {
-            return Ok(unit.FollowNotificationService.GetAllForUser(id));
+            return Ok(followService.GetAllForUser(id));
         }
 
         [Authorize]
@@ -47,7 +50,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                return Ok(unit.FollowNotificationService.CreateFollow(id, username));
+                return Ok(followService.CreateFollow(id, username));
             } catch(Exception ex)
             {
                 return BadRequest(ex.Message);

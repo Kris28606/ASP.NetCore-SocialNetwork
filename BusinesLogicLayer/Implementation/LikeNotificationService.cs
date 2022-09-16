@@ -3,11 +3,6 @@ using DataAccessLayer.UnitOfWork;
 using Domain;
 using Dto;
 using Mapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinesLogicLayer.Implementation
 {
@@ -16,9 +11,9 @@ namespace BusinesLogicLayer.Implementation
         private readonly IUnitOfWork unit;
         private LikeNotificationMapper mapper;
 
-        public LikeNotificationService(UserContext context)
+        public LikeNotificationService(IUnitOfWork unit)
         {
-            this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
+            this.unit = unit;
             mapper = new LikeNotificationMapper();
         }
 

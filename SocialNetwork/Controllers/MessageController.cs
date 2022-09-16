@@ -1,4 +1,4 @@
-﻿using BusinesLogicLayer.UnitOfWork;
+﻿using BusinesLogicLayer.Interfaces;
 using Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +9,11 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-        private readonly IUnitOfWorkService unit;
+        private readonly IMessageService messageService;
 
-        public MessageController(IUnitOfWorkService unit)
+        public MessageController(IMessageService messageService)
         {
-            this.unit = unit;
+            this.messageService = messageService;
         }
 
 
@@ -24,7 +24,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                return Ok(unit.MessageService.GetChat(fromId, forId));
+                return Ok(messageService.GetChat(fromId, forId));
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -37,7 +37,7 @@ namespace SocialNetwork.Controllers
         public IActionResult GetInboxUsers([FromRoute(Name ="id")] int id){
             try
             {
-                return Ok(unit.MessageService.GetInboxUsers(id));   
+                return Ok(messageService.GetInboxUsers(id));   
             } catch(Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -51,7 +51,7 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                MessageDto m = unit.MessageService.SendMessage(mess);
+                MessageDto m = messageService.SendMessage(mess);
                 if (m != null)
                 {
                     return Ok(m);

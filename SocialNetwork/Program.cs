@@ -1,7 +1,8 @@
-using BusinesLogicLayer.UnitOfWork;
+using BusinesLogicLayer.Implementation;
+using BusinesLogicLayer.Interfaces;
+using DataAccessLayer.UnitOfWork;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -16,7 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<JwtAuthentification>();
-builder.Services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IFollowNotificationService, FollowNotificationService>();
+builder.Services.AddScoped<ILikeNotificationService, LikeNotificationService>();
+builder.Services.AddScoped<ICommentNotificationService, CommentNotificationService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<UserContext>(options=>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("baza"));

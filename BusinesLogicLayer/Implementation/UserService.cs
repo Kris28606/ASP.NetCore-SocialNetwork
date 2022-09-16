@@ -2,13 +2,7 @@
 using DataAccessLayer.UnitOfWork;
 using Domain;
 using SocialNetwork.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mapper;
-using Dto;
 
 namespace BusinesLogicLayer.Implementation
 {
@@ -16,9 +10,9 @@ namespace BusinesLogicLayer.Implementation
     {
         private readonly IUnitOfWork unit;
         private readonly UserMapper mapper;
-        public UserService(UserContext context)
+        public UserService(IUnitOfWork unit)
         {
-            this.unit = new DataAccessLayer.UnitOfWork.UnitOfWork(context);
+            this.unit = unit;
             mapper = new UserMapper();
         }
 
