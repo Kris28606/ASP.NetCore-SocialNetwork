@@ -24,6 +24,8 @@ builder.Services.AddScoped<IFollowNotificationService, FollowNotificationService
 builder.Services.AddScoped<ILikeNotificationService, LikeNotificationService>();
 builder.Services.AddScoped<ICommentNotificationService, CommentNotificationService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
+builder.Services.AddScoped<JwtAuthentification>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<UserContext>(options=>

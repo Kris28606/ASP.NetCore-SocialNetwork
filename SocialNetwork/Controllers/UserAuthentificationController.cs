@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BusinesLogicLayer.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,11 @@ namespace SocialNetwork.Controllers
     [ApiController]
     public class UserAuthentificationController : ControllerBase
     {
-        private readonly JwtAuthentification jwt;
-        private readonly UserManager<User> manager;
+        private readonly IAuthentificationService authService;
 
-        public UserAuthentificationController(JwtAuthentification jwt, UserManager<User> manager)
+        public UserAuthentificationController(IAuthentificationService authService)
         {
-            this.jwt = jwt;
-            this.manager = manager;
+            this.authService = authService;
         }
 
 
@@ -25,7 +24,7 @@ namespace SocialNetwork.Controllers
         [Route("/login")]
         public async Task<IActionResult> LogIn([FromBody] LoginDto dto)
         {
-            UserDto user = await jwt.AuthentificationAsync(dto.Username, dto.Password);
+            UserDto user = await authService.LogIn(dto);
             if (user == null) return Unauthorized();
             return Ok(user);
         }
@@ -34,22 +33,13 @@ namespace SocialNetwork.Controllers
         [Route("/register")]
         public async Task<IActionResult> Register([FromBody]RegisterDto dto)
         {
-            var newUser = new User
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                UserName = dto.Username,
-                ProfilePicture = dto.ProfilePicture
-            };
-
-            var result = await manager.CreateAsync(newUser, dto.Password);
-            if (result.Succeeded)
+            var result=authService.Register(dto);
+            if (result.IsCompletedSuccessfully)
             {   
                 return Ok();
             } else
             {
-                return BadRequest("Neuspesno!"+result.Errors);
+                return BadRequest("Neuspesno!");
             }
         }
     }
