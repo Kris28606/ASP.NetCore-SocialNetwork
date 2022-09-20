@@ -9,7 +9,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        public List<Message> GetChat(int forId, int fromId);
+        public List<Message> GetChat(Message m);
         public List<User> GetInboxUsers(int userId);
         public Message Send(Message m);
 

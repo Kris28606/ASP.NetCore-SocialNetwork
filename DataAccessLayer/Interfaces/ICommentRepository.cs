@@ -9,6 +9,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface ICommentRepository : IRepository<Comment>
     {
-
+        public List<Comment> GetComments(int postId);
+        public Comment PostComment(Comment c);
     }
 }

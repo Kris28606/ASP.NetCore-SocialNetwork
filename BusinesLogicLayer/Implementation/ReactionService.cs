@@ -29,7 +29,7 @@ namespace BusinesLogicLayer.Implementation
 
         public List<UserDto> GetLikes(int postId, string username)
         {
-            List<User> users = unit.PostRepository.GetLikes(postId);
+            List<User> users = unit.ReactionRepository.GetLikes(postId);
             List<UserDto> usersDto = new List<UserDto>();
             users.ForEach(u =>
             {
@@ -71,7 +71,7 @@ namespace BusinesLogicLayer.Implementation
         {
             User u = new User { UserName = username };
             u = unit.UserRepository.SearchByUsername(u);
-            bool result = unit.PostRepository.UnlikeIt(postId, u.Id);
+            bool result = unit.ReactionRepository.UnlikeIt(new Reaction { PostId=postId, UserId=u.Id});
             if (result)
             {
                 unit.Save();

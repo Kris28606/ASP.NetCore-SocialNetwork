@@ -21,6 +21,7 @@ namespace DataAccessLayer.Implementation
         public List<User> GetInboxUsers(int userId)
         {
             List<User> users = new List<User>();
+            //za mene
             List<Message> messages= context.Messages.Include(m => m.FromUser).Where(m => m.ForId == userId).ToList();
             messages.ForEach(m =>
             {
@@ -54,10 +55,10 @@ namespace DataAccessLayer.Implementation
             throw new NotImplementedException();
         }
 
-        public List<Message> GetChat(int forId, int fromId)
+        public List<Message> GetChat(Message mess)
         {
-            List<Message> tudje= context.Messages.Where(m => m.FromId == fromId && m.ForId == forId).ToList();
-            List<Message> moje= context.Messages.Where(m => m.FromId == forId && m.ForId == fromId).ToList();
+            List<Message> tudje= context.Messages.Where(m => m.FromId == mess.FromId && m.ForId == mess.ForId).ToList();
+            List<Message> moje= context.Messages.Where(m => m.FromId == mess.ForId && m.ForId == mess.FromId).ToList();
             moje.ForEach(m =>
             {
                 tudje.Add(m);

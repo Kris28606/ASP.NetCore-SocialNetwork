@@ -19,20 +19,14 @@ namespace DataAccessLayer.Implementation
         }
         public void Add(Notification entity)
         {
-            context.Add(entity);
-        }
-
-        public void ConfirmFollow(int userId, int followId)
-        {
-            FollowNotification not = context.FollowNotifications.SingleOrDefault(n => n.FromWhoId == followId && n.ForWhoId == userId);
-            not.Status = FollowStatus.Confirmed;
-            not.Date = DateTime.Now;
-            context.Update(not);
+            FollowNotification not = (FollowNotification)entity;
+            context.Add(not);
         }
 
         public void Delete(Notification entity)
         {
-            throw new NotImplementedException();
+            FollowNotification not=context.FollowNotifications.SingleOrDefault(n => n.FromWhoId == entity.FromWhoId && n.ForWhoId == entity.ForWhoId);
+            context.Remove(not);
         }
 
         public List<Notification> GetAll()

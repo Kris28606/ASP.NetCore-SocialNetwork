@@ -9,6 +9,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IReactionRepository : IRepository<Reaction>
     {
-
+        public List<User> GetLikes(int postId);
+        public bool UnlikeIt(Reaction r);
     }
 }

@@ -19,7 +19,15 @@ namespace BusinesLogicLayer.Implementation
 
         public void ConfirmFollow(int userId, int followId)
         {
-            unit.FollowNotificationRepository.ConfirmFollow(userId, followId);
+            unit.FollowNotificationRepository.Delete(new FollowNotification { FromWhoId = followId, ForWhoId = userId });
+            FollowNotification not = new FollowNotification
+            {
+                FromWhoId = followId,
+                ForWhoId = userId,
+                Status = FollowStatus.Confirmed,
+                Date = DateTime.Now
+            };
+            unit.FollowNotificationRepository.Add(not);
             unit.Save();
         }
 
@@ -40,7 +48,7 @@ namespace BusinesLogicLayer.Implementation
                 FromWho=following,
                 Status=FollowStatus.Waiting
             };
-            unit.LikeNotificationsRepository.Add(not);
+            unit.FollowNotificationRepository.Add(not);
             unit.Save();
             return mapper.toDto(not);
         }

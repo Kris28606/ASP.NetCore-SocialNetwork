@@ -1,6 +1,5 @@
 ﻿using BusinesLogicLayer.Interfaces;
 using Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Dto;
@@ -13,10 +12,12 @@ namespace SocialNetwork.Controllers
     public class UserAuthentificationController : ControllerBase
     {
         private readonly IAuthentificationService authService;
+        private readonly UserManager<User> manager;
 
-        public UserAuthentificationController(IAuthentificationService authService)
+        public UserAuthentificationController(IAuthentificationService authService, UserManager<User> manager)
         {
             this.authService = authService;
+            this.manager = manager;
         }
 
 
@@ -33,13 +34,13 @@ namespace SocialNetwork.Controllers
         [Route("/register")]
         public async Task<IActionResult> Register([FromBody]RegisterDto dto)
         {
-            var result=authService.Register(dto);
-            if (result.IsCompletedSuccessfully)
+            var result = await authService.Register(dto);
+            if (result.Succeeded)
             {   
                 return Ok();
             } else
             {
-                return BadRequest("Neuspesno!");
+                return BadRequest("Neuspesno! ");
             }
         }
     }

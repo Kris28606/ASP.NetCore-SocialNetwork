@@ -26,7 +26,8 @@ namespace BusinesLogicLayer.Implementation
 
         public List<Message> GetChat(int fromId, int forId)
         {
-            return unit.MessageRepository.GetChat(forId, fromId);
+            Message m = new Message { ForId = forId, FromId = fromId };
+            return unit.MessageRepository.GetChat(m);
         }
 
         public List<UserDto> GetInboxUsers(int userId)

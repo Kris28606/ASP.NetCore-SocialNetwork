@@ -28,7 +28,7 @@ namespace BusinesLogicLayer.Implementation
 
         public List<CommentResponse> GetComments(int postId)
         {
-            List<Comment> comments = unit.PostRepository.GetComments(postId);
+            List<Comment> comments = unit.CommentRepository.GetComments(postId);
             List<CommentResponse> commentsDto = new List<CommentResponse>();
             comments.ForEach(c =>
             {
@@ -52,7 +52,7 @@ namespace BusinesLogicLayer.Implementation
             c.PostId = dto.PostId;
             c.User = u;
             c.DatumVreme = DateTime.Now;
-            Comment result = unit.PostRepository.PostComment(c);
+            Comment result = unit.CommentRepository.PostComment(c);
             if (result != null)
             {
                 unit.Save();

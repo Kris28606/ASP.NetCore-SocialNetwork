@@ -29,11 +29,7 @@ namespace SocialNetwork.Controllers
             {
                 reactionService.LikeIt(postId, user);
                 LikeNotificationDto dto = likeService.SendLikeNotification(postId, user);
-                if (dto != null)
-                {
-                    return Ok(dto);
-                }
-                return BadRequest();
+                return Ok(dto);
             }
             catch (Exception ex)
             {
