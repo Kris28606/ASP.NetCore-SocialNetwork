@@ -129,5 +129,30 @@ namespace BusinesLogicLayer.Implementation
             }
             return result;
         }
+
+        public List<UserDto> GetRandomUsers(int userId)
+        {
+            User u = new User { Id = userId };
+            List<User> users = unit.UserRepository.GetRandomUsers(u);
+            List<UserDto> usersDto = new List<UserDto>();
+            users.ForEach(u =>
+            {
+                bool not = unit.FollowNotificationRepository.ExistActiveFollow(new Notification { FromWhoId = userId, ForWhoId = u.Id });
+                UserDto uDto = mapper.toDto(u);
+                if(not)
+                {
+                    uDto.RequestSent = true;
+                }
+                u.Following.ForEach(f =>
+                {
+                    if (f.Id == userId)
+                    {
+                        uDto.FollowingMe = true;
+                    }
+                });
+                usersDto.Add(uDto);
+            });
+            return usersDto;
+        }
     }
 }

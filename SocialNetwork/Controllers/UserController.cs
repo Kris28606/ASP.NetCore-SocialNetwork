@@ -157,7 +157,13 @@ namespace SocialNetwork.Controllers
             }
         }
 
-
+        [Authorize]
+        [HttpGet]
+        [Route("random/{id}")]
+        public IActionResult GetRandom([FromRoute(Name ="id")] int id)
+        {
+            return Ok(service.GetRandomUsers(id));
+        }
 
     }
 }

@@ -17,5 +17,6 @@ namespace DataAccessLayer.Interfaces
         public User SearchByUsername(User user);
         public bool Unfollow(string username, int id);
         public bool AddFollower(int userId, int followId);
+        public List<User> GetRandomUsers(User entity);
     }
 }
